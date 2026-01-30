@@ -3,162 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coach AGOrA - Pôle 3 Administration du Personnel</title>
+    <title>Coach AGOrA - Master RH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root { --primary: #48dbfb; --secondary: #feca57; --accent: #ff6b6b; --bg: #1a1a2e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1c2c; color: #f0f0f0; line-height: 1.6; }
-        header { background: #4a4e69; padding: 20px; text-align: center; border-bottom: 3px solid #9a8c98; }
-        .nav-container { display: flex; justify-content: center; background: #22223b; padding: 10px; position: sticky; top: 0; z-index: 100; }
-        .nav-btn { background: transparent; border: 2px solid #9a8c98; color: #f2e9e4; padding: 10px 20px; margin: 0 5px; border-radius: 25px; cursor: pointer; transition: 0.3s; font-weight: bold; }
-        .nav-btn:hover, .nav-btn.active { background: #c9ada7; color: #22223b; border-color: #c9ada7; }
-        .main-content { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.4s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: #4a4e69; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .card h2 { color: #f2e9e4; margin-bottom: 15px; border-bottom: 1px solid #9a8c98; padding-bottom: 5px; }
-        .fiche-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #c9ada7; }
-        .option-btn { display: block; width: 100%; background: #22223b; border: 1px solid #9a8c98; color: white; padding: 12px; margin: 10px 0; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; }
-        .option-btn:hover { background: #4a4e69; }
-        #feedback { font-weight: bold; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; }
-        .success { background: #2d6a4f; color: white; display: block !important; }
-        .error { background: #a4161a; color: white; display: block !important; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; overflow-x: hidden; }
+        
+        /* Header Stats */
+        .header { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stats { display: flex; gap: 20px; align-items: center; }
+        .xp-bar { width: 120px; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+        .xp-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+
+        /* Nav */
+        .nav-container { display: flex; justify-content: center; padding: 20px; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
+        .nav-btn:hover, .nav-btn.active { background: var(--primary); color: #1a1a2e; border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(72, 219, 251, 0.3); }
+
+        /* Main Content */
+        .main-content { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .section { display: none; animation: slideUp 0.5s ease; }
+        .section.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards */
+        .card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .fiche-rh { border-left: 5px solid var(--primary); background: rgba(255,255,255,0.05); padding: 15px; margin: 10px 0; border-radius: 0 15px 15px 0; }
+        
+        /* Quiz & Défi */
+        .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.2s; }
+        .btn-choice:hover { background: rgba(255,255,255,0.2); transform: translateX(10px); }
+        .timer { font-size: 2.5rem; font-weight: bold; color: var(--secondary); margin: 20px 0; }
+
+        /* Badges */
+        .badges-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
+        .badge { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; opacity: 0.3; filter: grayscale(1); transition: 0.5s; }
+        .badge.unlocked { opacity: 1; filter: grayscale(0); border: 2px solid var(--secondary); background: rgba(254, 202, 87, 0.1); }
+        .badge-icon { font-size: 2rem; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>💼 Coach AGOrA - Pôle 3</h1>
-    <p>Administration du Personnel (Unité U32)</p>
-</header>
-
-<nav class="nav-container">
-    <button class="nav-btn active" onclick="show('accueil')">🏠 Accueil</button>
-    <button class="nav-btn" onclick="show('fiches')">📖 Fiches Référentiel</button>
-    <button class="nav-btn" onclick="show('quiz')">❓ Quiz Compétences</button>
-</nav>
-
-<main class="main-content">
-
-    <section id="accueil" class="section active">
-        <div class="card">
-            <h2>Prêt pour l'épreuve E32 ?</h2>
-            <p>Ce module interactif couvre l'ensemble du <strong>Pôle 3</strong> : Administration du personnel. [cite: 359, 843]</p>
-            <p style="margin-top:10px;">Vous allez travailler sur :</p>
-            <ul style="margin: 15px 30px;">
-                <li>Le suivi de la carrière (embauche, formation, départ). [cite: 363, 573]</li>
-                <li>Le suivi organisationnel (temps de travail, paie, déplacements). [cite: 368, 369]</li>
-                <li>L'activité sociale et le respect du RGPD. [cite: 370, 377]</li>
-            </ul>
+    <header class="header">
+        <div class="logo">🚀 AGOrA MASTER</div>
+        <div class="stats">
+            <div class="xp-container">
+                <span id="xp-text">0 XP</span>
+                <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+            </div>
+            <span>Niv. <span id="level">1</span></span>
         </div>
-    </section>
+    </header>
 
-    <section id="fiches" class="section">
-        <div class="card">
-            <h2>3.1 - Suivi de la carrière du personnel [cite: 363]</h2>
-            <div class="fiche-item">
-                <strong>Formalités :</strong> DPAE à l'embauche, mise à jour du RUP (Registre Unique du Personnel), gestion des dossiers individuels et organisation des visites médicales (VIP). [cite: 365, 366, 566]
+    <nav class="nav-container">
+        <button class="nav-btn active" onclick="showTab('accueil')">🏠 Accueil</button>
+        <button class="nav-btn" onclick="showTab('fiches')">📖 Fiches Pôle 3</button>
+        <button class="nav-btn" onclick="showTab('chrono')">⏱️ Défi Chrono</button>
+        <button class="nav-btn" onclick="showTab('analyse')">🔍 Analyse Paie</button>
+        <button class="nav-btn" onclick="showTab('succes')">🏆 Succès</button>
+    </nav>
+
+    <main class="main-content">
+        <section id="accueil" class="section active">
+            <div class="card" style="text-align: center;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 20px;">Prêt à devenir un Expert RH ?</h1>
+                <p>Maîtrisez le Pôle 3 du référentiel AGOrA avec cette interface Master.</p>
+                <div style="margin: 30px 0; display: flex; justify-content: center; gap: 20px;">
+                    <div class="card" style="width: 150px; padding: 15px;">⚡<br>Rapide</div>
+                    <div class="card" style="width: 150px; padding: 15px;">🎮<br>Gamifié</div>
+                    <div class="card" style="width: 150px; padding: 15px;">🎓<br>Référentiel</div>
+                </div>
+                <button class="nav-btn" style="padding: 15px 40px; font-size: 1.1rem;" onclick="showTab('fiches')">Commencer 📖</button>
             </div>
-            <div class="fiche-item">
-                <strong>Formation :</strong> Planification logistique des actions de formation (présentiel ou distanciel) et suivi administratif. [cite: 367, 567, 443]
+        </section>
+
+        <section id="fiches" class="section">
+            <div class="card">
+                <h2>📚 Synthèse du Pôle 3 : Administration du personnel</h2>
+                <div class="fiche-rh">
+                    <strong>3.1 Suivi de la carrière :</strong> DPAE (URSSAF) obligatoire avant l'embauche. RUP (Registre Unique) à tenir par ordre d'entrée. Archivage sécurisé (RGPD).
+                </div>
+                <div class="fiche-rh">
+                    <strong>3.2 Suivi de l'activité :</strong> Gestion des temps de présence, congés et RTT. Préparation de la paie (heures sup, primes, absences).
+                </div>
+                <div class="fiche-rh">
+                    <strong>3.3 Action Sociale :</strong> Communication interne (CSE), affichage obligatoire et tableaux de bord sociaux (bilan social).
+                </div>
+                <button class="nav-btn" onclick="addXP(50); unlockBadge('reader')">J'ai lu, je gagne 50 XP !</button>
             </div>
+        </section>
 
-            <h2>3.2 - Suivi organisationnel et financier [cite: 368]</h2>
-            <div class="fiche-item">
-                <strong>Gestion du temps :</strong> Planification des temps de présence, décompte des absences et gestion des congés selon les contraintes de service. [cite: 668, 408]
+        <section id="chrono" class="section">
+            <div class="card" style="text-align: center;">
+                <h2>⏱️ Défi Chrono : 60 secondes !</h2>
+                <div id="chrono-start">
+                    <p style="margin-bottom: 20px;">Répondez à un maximum de questions avant la fin du temps.</p>
+                    <button class="nav-btn" onclick="startChrono()">LANCER LE DÉFI 🔥</button>
+                </div>
+                <div id="chrono-game" style="display: none;">
+                    <div class="timer" id="timer">60s</div>
+                    <h3 id="chrono-q">Question ?</h3>
+                    <div id="chrono-opts"></div>
+                </div>
             </div>
-            <div class="fiche-item">
-                <strong>Paie :</strong> Collecte des éléments variables (heures supplémentaires, primes) pour préparer le bulletin et suivi des enregistrements sur PGI. [cite: 671, 672, 443]
+        </section>
+
+        <section id="analyse" class="section">
+            <div class="card">
+                <h2>🔍 Analyse de Bulletin de Paie</h2>
+                <p>Identifiez l'erreur sur ce bulletin de paie fictif :</p>
+                <div style="background: white; color: black; padding: 15px; margin: 20px 0; border-radius: 10px; font-family: monospace; text-align: left; font-size: 0.8rem;">
+                    ENTREPRISE : AGORA-LPO<br>
+                    SALARIÉ : Jean Dupont<br>
+                    -----------------------------------<br>
+                    SALAIRE BRUT : 1800,00 €<br>
+                    COTISATIONS SALARIALES : 400,00 €<br>
+                    -----------------------------------<br>
+                    NET À PAYER : 2200,00 € (???)
+                </div>
+                <div id="analyse-opts">
+                    <button class="btn-choice" onclick="checkAnalyse(true)">L'erreur est dans le NET : il devrait être inférieur au BRUT.</button>
+                    <button class="btn-choice" onclick="checkAnalyse(false)">L'erreur est dans le nom de l'entreprise.</button>
+                </div>
             </div>
+        </section>
 
-            <h2>3.3 - Activité sociale de l'organisation [cite: 370]</h2>
-            <div class="fiche-item">
-                <strong>Communication :</strong> Diffusion des informations sociales légales, mise à jour des tableaux de bord sociaux et rédaction d'écrits professionnels (notes, convocations). [cite: 371, 372, 676]
+        <section id="succes" class="section">
+            <div class="card">
+                <h2>🏆 Tes Badges de Compétences</h2>
+                <div class="badges-grid">
+                    <div class="badge" id="badge-reader"><div class="badge-icon">📖</div><br>Lecteur RH</div>
+                    <div class="badge" id="badge-chrono"><div class="badge-icon">⚡</div><br>Rapide</div>
+                    <div class="badge" id="badge-expert"><div class="badge-icon">🎓</div><br>Expert Paie</div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <section id="quiz" class="section">
-        <div class="card">
-            <h2 id="q-title">Question 1</h2>
-            <p id="q-text" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
-            <div id="q-options"></div>
-            <div id="feedback"></div>
-        </div>
-    </section>
+    <script>
+        let xp = 0;
+        let level = 1;
+        let chronoTimer;
 
-</main>
-
-<script>
-    function show(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        event.target.classList.add('active');
-        if(id === 'quiz') loadQuestion();
-    }
-
-    const quizData = [
-        {
-            q: "Quelle formalité doit être effectuée au plus tard 8 jours avant l'embauche d'un salarié ?",
-            o: ["Le Registre Unique du Personnel", "La DPAE (URSSAF)", "L'entretien annuel"],
-            c: 1,
-            e: "La DPAE est obligatoire avant toute embauche. [cite: 361, 365]"
-        },
-        {
-            q: "Dans quel document obligatoire doit-on inscrire les salariés par ordre chronologique d'arrivée ?",
-            o: ["Le DUERP", "Le contrat de travail", "Le Registre Unique du Personnel (RUP)"],
-            c: 2,
-            e: "Le RUP est obligatoire dès le premier salarié et liste les entrées/sorties. [cite: 361, 666]"
-        },
-        {
-            q: "Quel règlement impose la stricte confidentialité des dossiers du personnel (RIB, adresse, santé) ?",
-            o: ["Le RGPD", "Le règlement intérieur", "La charte informatique"],
-            c: 0,
-            e: "Le RGPD protège les données personnelles sensibles des salariés. [cite: 362, 377, 570]"
-        },
-        {
-            q: "Parmi ces éléments, lequel est nécessaire pour préparer le bulletin de paie ?",
-            o: ["L'organigramme", "Le relevé des heures supplémentaires", "La convention de stage"],
-            c: 1,
-            e: "Les variables de paie (heures sup, absences) sont indispensables au calcul du salaire. [cite: 361, 671]"
+        function showTab(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
         }
-    ];
 
-    let currentQ = 0;
-
-    function loadQuestion() {
-        const data = quizData[currentQ];
-        document.getElementById('q-title').innerText = "Question " + (currentQ + 1);
-        document.getElementById('q-text').innerText = data.q;
-        const options = document.getElementById('q-options');
-        options.innerHTML = '';
-        const feedback = document.getElementById('feedback');
-        feedback.style.display = 'none';
-
-        data.o.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(i);
-            options.appendChild(btn);
-        });
-    }
-
-    function checkAnswer(idx) {
-        const data = quizData[currentQ];
-        const feedback = document.getElementById('feedback');
-        if(idx === data.c) {
-            feedback.className = 'success';
-            feedback.innerHTML = "✅ Correct ! " + data.e;
-            currentQ = (currentQ + 1) % quizData.length;
-            setTimeout(loadQuestion, 3000);
-        } else {
-            feedback.className = 'error';
-            feedback.innerHTML = "❌ Mauvaise réponse. Réessayez !";
+        function addXP(amount) {
+            xp += amount;
+            if(xp >= level * 200) { level++; xp = 0; alert("Niveau supérieur ! Niveau " + level); }
+            document.getElementById('xp-text').innerText = xp + " XP";
+            document.getElementById('xp-fill').style.width = (xp / (level*200) * 100) + "%";
+            document.getElementById('level').innerText = level;
         }
-    }
-</script>
 
+        function unlockBadge(id) {
+            document.getElementById('badge-' + id).classList.add('unlocked');
+        }
+
+        // CHRONO LOGIC
+        const chronoQs = [
+            {q: "Délai DPAE ?", a: ["8j avant", "15j après"], c:0},
+            {q: "Le RUP est-il obligatoire ?", a: ["Oui", "Non"], c:0},
+            {q: "RGPD = ?", a: ["Données", "Ventes"], c:0}
+        ];
+        
+        let timeLeft = 60;
+        function startChrono() {
+            document.getElementById('chrono-start').style.display = 'none';
+            document.getElementById('chrono-game').style.display = 'block';
+            nextChronoQ();
+            chronoTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft + "s";
+                if(timeLeft <= 0) {
+                    clearInterval(chronoTimer);
+                    alert("Défi terminé !");
+                    unlockBadge('chrono');
+                }
+            }, 1000);
+        }
+
+        function nextChronoQ() {
+            let q = chronoQs[Math.floor(Math.random()*chronoQs.length)];
+            document.getElementById('chrono-q').innerText = q.q;
+            let optDiv = document.getElementById('chrono-opts');
+            optDiv.innerHTML = '';
+            q.a.forEach((o, i) => {
+                let b = document.createElement('button');
+                b.className = 'btn-choice';
+                b.innerText = o;
+                b.onclick = () => { if(i===q.c) addXP(20); nextChronoQ(); };
+                optDiv.appendChild(b);
+            });
+        }
+
+        function checkAnalyse(isCorrect) {
+            if(isCorrect) {
+                alert("Bravo ! Le salaire NET est toujours égal au BRUT - les COTISATIONS.");
+                addXP(100);
+                unlockBadge('expert');
+            } else {
+                alert("Réessaie !");
+            }
+        }
+    </script>
 </body>
 </html>
