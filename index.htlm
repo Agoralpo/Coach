@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach AGOrA - Gestion RH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles inspirés de ton lien d'origine mais adaptés AGOrA */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; }
+        .header { background: rgba(255,255,255,0.1); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, #48dbfb, #feca57); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-container { display: flex; justify-content: center; padding: 20px; gap: 10px; flex-wrap: wrap; }
+        .nav-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 25px; border-radius: 30px; cursor: pointer; transition: 0.3s; }
+        .nav-btn.active, .nav-btn:hover { background: #48dbfb; color: #1a1a2e; font-weight: bold; }
+        .main-content { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+        .card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fiche { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 5px solid #48dbfb; }
+        .flashcard { background: #48dbfb; color: #1a1a2e; padding: 40px; border-radius: 20px; text-align: center; cursor: pointer; font-size: 1.5rem; font-weight: bold; margin: 20px auto; max-width: 400px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">💼 Coach AGOrA - RH</div>
+        <div>Niveau : Professionnel</div>
+    </header>
+
+    <nav class="nav-container">
+        <button class="nav-btn active" onclick="show('accueil')">🏠 Accueil</button>
+        <button class="nav-btn" onclick="show('fiches')">📖 Fiches RH</button>
+        <button class="nav-btn" onclick="show('quiz')">❓ Quiz Paie</button>
+    </nav>
+
+    <main class="main-content">
+        <section id="accueil" class="section active">
+            <div class="card" style="text-align: center;">
+                <h1>Bienvenue dans le Module RH 🚀</h1>
+                <p style="margin: 20px 0;">Maîtrisez la gestion du personnel et les formalités d'embauche.</p>
+                <button class="nav-btn" style="background: #feca57; color: #000;" onclick="show('fiches')">C'est parti !</button>
+            </div>
+        </section>
+
+        <section id="fiches" class="section">
+            <div class="card">
+                <h2>📘 Essentiels de la Gestion du Personnel</h2>
+                <div class="fiche">
+                    <h3>DPAE (Déclaration Préalable À l'Embauche)</h3>
+                    <p>Obligatoire pour chaque salarié. À transmettre à l'URSSAF au plus tôt 8 jours avant l'embauche.</p>
+                </div>
+                <div class="fiche">
+                    <h3>RUP (Registre Unique du Personnel)</h3>
+                    <p>Document obligatoire dès le premier salarié. Doit être tenu à jour par ordre d'arrivée.</p>
+                </div>
+                <div class="fiche">
+                    <h3>RGPD & Confidentialité</h3>
+                    <p>Les données des salariés (RIB, adresse, santé) sont sensibles. Accès réservé aux services RH.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="section">
+            <div class="card" id="quiz-box">
+                <h2>❓ Test de connaissances</h2>
+                <p id="question-text" style="margin: 20px 0; font-size: 1.2rem;"></p>
+                <div id="options" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                <p id="feedback" style="margin-top: 20px; font-weight: bold;"></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function show(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'quiz') startQuiz();
+        }
+
+        const questions = [
+            { q: "Quand doit-on faire la DPAE ?", a: ["Le jour de l'embauche", "8 jours avant max", "1 mois après"], c: 1 },
+            { q: "Le RUP est-il obligatoire ?", a: ["Oui, dès le 1er salarié", "Seulement après 50 salariés", "Non, c'est facultatif"], c: 0 },
+            { q: "Quelle mention est obligatoire sur le bulletin de paie ?", a: ["L'âge du capitaine", "Le SIRET de l'entreprise", "La couleur préférée du salarié"], c: 1 }
+        ];
+
+        function startQuiz() {
+            let index = 0;
+            const display = () => {
+                const q = questions[index];
+                document.getElementById('question-text').innerText = q.q;
+                const optDiv = document.getElementById('options');
+                optDiv.innerHTML = '';
+                q.a.forEach((opt, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'nav-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        if(i === q.c) {
+                            document.getElementById('feedback').innerText = "✅ Bravo !";
+                            index = (index + 1) % questions.length;
+                            setTimeout(display, 1500);
+                        } else {
+                            document.getElementById('feedback').innerText = "❌ Réessaie !";
+                        }
+                    };
+                    optDiv.appendChild(btn);
+                });
+            };
+            display();
+        }
+    </script>
+</body>
+</html>
