@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Coach AGOrA RH</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a2e; color: white; padding: 20px; text-align: center; }
+        .card { background: #16213e; border: 2px solid #48dbfb; border-radius: 15px; padding: 20px; margin: 10px; }
+        .btn { background: #48dbfb; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin: 5px; font-weight: bold; }
+        .section { display: none; }
+        .active { display: block; }
+        h1 { color: #48dbfb; }
+    </style>
+</head>
+<body>
+
+    <h1>💼 Coach AGOrA - Module RH</h1>
+
+    <button class="btn" onclick="show('accueil')">🏠 Accueil</button>
+    <button class="btn" onclick="show('fiches')">📖 Fiches</button>
+    <button class="btn" onclick="show('quiz')">❓ Quiz</button>
+
+    <div id="accueil" class="section active">
+        <div class="card">
+            <h2>Bienvenue !</h2>
+            <p>Prêt pour réviser la gestion du personnel ?</p>
+        </div>
+    </div>
+
+    <div id="fiches" class="section">
+        <div class="card">
+            <h3>La DPAE</h3>
+            <p>Obligatoire avant l'embauche (URSSAF).</p>
+        </div>
+        <div class="card">
+            <h3>Le RUP</h3>
+            <p>Registre Unique du Personnel : obligatoire dès le 1er salarié.</p>
+        </div>
+    </div>
+
+    <div id="quiz" class="section">
+        <div class="card">
+            <h3 id="q">Question...</h3>
+            <div id="opts"></div>
+            <p id="res"></p>
+        </div>
+    </div>
+
+    <script>
+        function show(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        const questions = [
+            { q: "Délai max pour la DPAE ?", a: ["8 jours avant", "15 jours après"], c: 0 },
+            { q: "Le RUP est-il obligatoire ?", a: ["Oui", "Non"], c: 0 }
+        ];
+
+        let index = 0;
+        function loadQ() {
+            const q = questions[index];
+            document.getElementById('q').innerText = q.q;
+            const o = document.getElementById('opts');
+            o.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = 'btn';
+                b.innerText = opt;
+                b.onclick = () => {
+                    if(i === q.c) {
+                        document.getElementById('res').innerText = "✅ Bravo !";
+                        index = (index + 1) % questions.length;
+                        setTimeout(loadQ, 1000);
+                    } else {
+                        document.getElementById('res').innerText = "❌ Faux !";
+                    }
+                };
+                o.appendChild(b);
+            });
+        }
+        loadQ();
+    </script>
+</body>
+</html>
