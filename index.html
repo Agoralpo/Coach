@@ -3,214 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coach AGOrA - Master RH</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>AGOrA Master Pro - Pôle 3 Excellence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #48dbfb; --secondary: #feca57; --accent: #ff6b6b; --bg: #1a1a2e; }
+        :root { --primary: #00d2d3; --secondary: #feca57; --accent: #ff6b6b; --bg: #0f172a; --card-bg: #1e293b; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; overflow-x: hidden; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; overflow-x: hidden; }
         
-        /* Header Stats */
-        .header { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stats { display: flex; gap: 20px; align-items: center; }
-        .xp-bar { width: 120px; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
-        .xp-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+        /* Header & Gamification Stats */
+        .header { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(12px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary); }
+        .logo { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+        .stats-group { display: flex; gap: 2rem; align-items: center; }
+        .xp-bar-outer { width: 150px; height: 8px; background: #334155; border-radius: 4px; }
+        .xp-bar-inner { height: 100%; background: var(--primary); width: 0%; border-radius: 4px; transition: width 0.6s; }
 
-        /* Nav */
-        .nav-container { display: flex; justify-content: center; padding: 20px; gap: 10px; flex-wrap: wrap; }
-        .nav-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
-        .nav-btn:hover, .nav-btn.active { background: var(--primary); color: #1a1a2e; border-color: transparent; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(72, 219, 251, 0.3); }
+        /* Navigation Master */
+        nav { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem; background: #1e293b; flex-wrap: wrap; }
+        .nav-link { background: #334155; border: none; color: #94a3b8; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.85rem; }
+        .nav-link.active { background: var(--primary); color: var(--bg); box-shadow: 0 4px 15px rgba(0, 210, 211, 0.4); }
 
-        /* Main Content */
-        .main-content { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .section { display: none; animation: slideUp 0.5s ease; }
-        .section.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        /* Sections */
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        section { display: none; }
+        section.active { display: block; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards */
-        .card { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        .fiche-rh { border-left: 5px solid var(--primary); background: rgba(255,255,255,0.05); padding: 15px; margin: 10px 0; border-radius: 0 15px 15px 0; }
+        /* Cards & Components */
+        .card { background: var(--card-bg); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #334155; }
+        .fiche-box { background: #0f172a; padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem; border-left: 5px solid var(--primary); }
         
-        /* Quiz & Défi */
-        .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.2s; }
-        .btn-choice:hover { background: rgba(255,255,255,0.2); transform: translateX(10px); }
-        .timer { font-size: 2.5rem; font-weight: bold; color: var(--secondary); margin: 20px 0; }
-
+        /* Interactive Elements */
+        .quiz-option { width: 100%; text-align: left; padding: 1rem; margin-bottom: 0.6rem; background: #334155; border: none; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .quiz-option:hover { background: #475569; transform: scale(1.01); }
+        .input-paie { background: #0f172a; border: 2px solid var(--primary); color: white; padding: 10px; border-radius: 8px; font-size: 1.2rem; width: 120px; text-align: center; }
+        
         /* Badges */
-        .badges-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
-        .badge { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; opacity: 0.3; filter: grayscale(1); transition: 0.5s; }
-        .badge.unlocked { opacity: 1; filter: grayscale(0); border: 2px solid var(--secondary); background: rgba(254, 202, 87, 0.1); }
-        .badge-icon { font-size: 2rem; }
+        .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 1rem; }
+        .badge { background: #334155; padding: 1rem; border-radius: 15px; text-align: center; opacity: 0.2; transition: 0.5s; }
+        .badge.unlocked { opacity: 1; border: 2px solid var(--secondary); background: rgba(254, 202, 87, 0.1); }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="logo">🚀 AGOrA MASTER</div>
-        <div class="stats">
-            <div class="xp-container">
-                <span id="xp-text">0 XP</span>
-                <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+        <div class="logo">AGOrA MASTER PRO</div>
+        <div class="stats-group">
+            <div class="xp-display">
+                <div class="xp-bar-outer"><div class="xp-bar-inner" id="xp-bar"></div></div>
             </div>
-            <span>Niv. <span id="level">1</span></span>
+            <div style="text-align: center;"><span style="font-size: 0.7rem; color: var(--secondary);">NIVEAU</span><br><span id="lvl-display" style="font-weight: 800;">1</span></div>
         </div>
     </header>
 
-    <nav class="nav-container">
-        <button class="nav-btn active" onclick="showTab('accueil')">🏠 Accueil</button>
-        <button class="nav-btn" onclick="showTab('fiches')">📖 Fiches Pôle 3</button>
-        <button class="nav-btn" onclick="showTab('chrono')">⏱️ Défi Chrono</button>
-        <button class="nav-btn" onclick="showTab('analyse')">🔍 Analyse Paie</button>
-        <button class="nav-btn" onclick="showTab('succes')">🏆 Succès</button>
+    <nav>
+        <button class="nav-link active" onclick="navigate('home')">🏠 Accueil</button>
+        <button class="nav-link" onclick="navigate('referentiel')">📖 Référentiel</button>
+        <button class="nav-link" onclick="navigate('paie')">💵 Calcul Paie</button>
+        <button class="nav-link" onclick="navigate('audit')">🔍 Audit Dossier</button>
+        <button class="nav-link" onclick="navigate('alea')">⚠️ Aléas</button>
+        <button class="nav-link" onclick="navigate('lexique')">📚 Lexique</button>
+        <button class="nav-link" onclick="navigate('succes')">🏆 Succès</button>
     </nav>
 
-    <main class="main-content">
-        <section id="accueil" class="section active">
+    <div class="container">
+        <section id="home" class="active">
             <div class="card" style="text-align: center;">
-                <h1 style="font-size: 2.5rem; margin-bottom: 20px;">Prêt à devenir un Expert RH ?</h1>
-                <p>Maîtrisez le Pôle 3 du référentiel AGOrA avec cette interface Master.</p>
-                <div style="margin: 30px 0; display: flex; justify-content: center; gap: 20px;">
-                    <div class="card" style="width: 150px; padding: 15px;">⚡<br>Rapide</div>
-                    <div class="card" style="width: 150px; padding: 15px;">🎮<br>Gamifié</div>
-                    <div class="card" style="width: 150px; padding: 15px;">🎓<br>Référentiel</div>
+                <h1 style="font-size: 2.2rem; margin-bottom: 1rem;">Simulateur d'Excellence Pôle 3</h1>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">L'outil ultime pour valider l'Unité U32. Pratiquez le suivi de carrière, la paie et le dialogue social en immersion totale.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="fiche-box"><strong>3.1</strong> Carrière</div>
+                    <div class="fiche-box"><strong>3.2</strong> Paie & Temps</div>
+                    <div class="fiche-box"><strong>3.3</strong> Social</div>
+                    <div class="fiche-box"><strong>RGPD</strong> Sécurité</div>
                 </div>
-                <button class="nav-btn" style="padding: 15px 40px; font-size: 1.1rem;" onclick="showTab('fiches')">Commencer 📖</button>
             </div>
         </section>
 
-        <section id="fiches" class="section">
+        <section id="referentiel">
             <div class="card">
-                <h2>📚 Synthèse du Pôle 3 : Administration du personnel</h2>
-                <div class="fiche-rh">
-                    <strong>3.1 Suivi de la carrière :</strong> DPAE (URSSAF) obligatoire avant l'embauche. RUP (Registre Unique) à tenir par ordre d'entrée. Archivage sécurisé (RGPD).
-                </div>
-                <div class="fiche-rh">
-                    <strong>3.2 Suivi de l'activité :</strong> Gestion des temps de présence, congés et RTT. Préparation de la paie (heures sup, primes, absences).
-                </div>
-                <div class="fiche-rh">
-                    <strong>3.3 Action Sociale :</strong> Communication interne (CSE), affichage obligatoire et tableaux de bord sociaux (bilan social).
-                </div>
-                <button class="nav-btn" onclick="addXP(50); unlockBadge('reader')">J'ai lu, je gagne 50 XP !</button>
+                <h2>📖 Savoirs Prioritaires de l'Inspecteur</h2>
+                <div class="fiche-box"><h3>3.1 - Carrière</h3><p>DPAE (8j max avant), RUP obligatoire (1er salarié), VIP (3 mois max), Dossiers Fin (Certificat, Pôle Emploi, Solde tout compte).</p></div>
+                <div class="fiche-box"><h3>3.2 - Paie & Trésorerie</h3><p>Variables (Heures sup, Absences), Brut vs Net, Cotisations URSSAF, États de frais, Remboursement déplacements.</p></div>
+                <div class="fiche-box"><h3>3.3 - Relations Sociales</h3><p>CSE (+11 salariés), DUERP obligatoire, RGPD (Confidentialité absolue), Affichage obligatoire.</p></div>
+                <button class="nav-link" style="width: 100%; margin-top: 1rem;" onclick="addXP(40); unlock('reader')">Valider la compétence théorique (+40 XP)</button>
             </div>
         </section>
 
-        <section id="chrono" class="section">
+        <section id="paie">
             <div class="card" style="text-align: center;">
-                <h2>⏱️ Défi Chrono : 60 secondes !</h2>
-                <div id="chrono-start">
-                    <p style="margin-bottom: 20px;">Répondez à un maximum de questions avant la fin du temps.</p>
-                    <button class="nav-btn" onclick="startChrono()">LANCER LE DÉFI 🔥</button>
+                <h2>💵 Simulateur de Paie (Pôle 3.2)</h2>
+                <p style="margin-bottom: 1.5rem;">Calculez le <strong>Salaire Net</strong> (arrondi à l'euro) :</p>
+                <div class="fiche-box">
+                    <p>Salaire Brut : <strong>2400 €</strong></p>
+                    <p>Taux de cotisations sociales : <strong>22%</strong></p>
                 </div>
-                <div id="chrono-game" style="display: none;">
-                    <div class="timer" id="timer">60s</div>
-                    <h3 id="chrono-q">Question ?</h3>
-                    <div id="chrono-opts"></div>
+                <input type="number" id="input-paie" class="input-paie" placeholder="Net ?">
+                <button class="nav-link" style="background: var(--primary); color: black;" onclick="checkPaie()">Vérifier le calcul</button>
+                <p id="paie-feedback" style="margin-top: 1rem;"></p>
+            </div>
+        </section>
+
+        <section id="audit">
+            <div class="card">
+                <h2>🔍 Audit de Dossier Salarié</h2>
+                <p>Situation : Un nouveau salarié arrive. Quel document est <strong>MANQUANT</strong> pour être conforme au RGPD et à la loi ?</p>
+                <div class="fiche-box">
+                    <p>✅ DPAE validée</p>
+                    <p>✅ Copie CNI</p>
+                    <p>✅ RIB</p>
+                    <p>❓ ?????</p>
+                </div>
+                <button class="quiz-option" onclick="checkAudit(true)">Attestation de Visite d'Information et de Prévention (VIP)</button>
+                <button class="quiz-option" onclick="checkAudit(false)">Photo de ses dernières vacances</button>
+                <button class="quiz-option" onclick="checkAudit(false)">Copie de sa carte de fidélité supermarché</button>
+            </div>
+        </section>
+
+        <section id="alea">
+            <div class="card">
+                <h2>⚠️ Gestionnaire d'Aléas</h2>
+                <p>Trois situations urgentes arrivent à 9h00. Classez-les de la plus <strong>URGENTE légalement</strong> à la moins urgente :</p>
+                <div class="fiche-box">1. Accident du travail | 2. Fin de période d'essai ce soir | 3. Planning du mois prochain</div>
+                <button class="quiz-option" onclick="addXP(50); alert('Correct ! L\'accident du travail (sécurité) et la fin de contrat sont prioritaires sur le planning.')">1 > 2 > 3</button>
+                <button class="quiz-option" onclick="alert('Faux. La sécurité physique (accident) prime sur l\'organisation.')">3 > 1 > 2</button>
+            </div>
+        </section>
+
+        <section id="lexique">
+            <div class="card">
+                <h2>📚 Dictionnaire Expert</h2>
+                <div style="display: grid; gap: 0.5rem;">
+                    <div class="fiche-box"><strong>DPAE</strong> : Déclaration Préalable à l'Embauche (URSSAF).</div>
+                    <div class="fiche-box"><strong>DUERP</strong> : Document Unique d'Évaluation des Risques Professionnels.</div>
+                    <div class="fiche-box"><strong>RUP</strong> : Registre Unique du Personnel.</div>
+                    <div class="fiche-box"><strong>VIP</strong> : Visite d'Information et de Prévention (Médecine du travail).</div>
+                    <div class="fiche-box"><strong>CSE</strong> : Comité Social et Économique (Dialogue social).</div>
                 </div>
             </div>
         </section>
 
-        <section id="analyse" class="section">
+        <section id="succes">
             <div class="card">
-                <h2>🔍 Analyse de Bulletin de Paie</h2>
-                <p>Identifiez l'erreur sur ce bulletin de paie fictif :</p>
-                <div style="background: white; color: black; padding: 15px; margin: 20px 0; border-radius: 10px; font-family: monospace; text-align: left; font-size: 0.8rem;">
-                    ENTREPRISE : AGORA-LPO<br>
-                    SALARIÉ : Jean Dupont<br>
-                    -----------------------------------<br>
-                    SALAIRE BRUT : 1800,00 €<br>
-                    COTISATIONS SALARIALES : 400,00 €<br>
-                    -----------------------------------<br>
-                    NET À PAYER : 2200,00 € (???)
-                </div>
-                <div id="analyse-opts">
-                    <button class="btn-choice" onclick="checkAnalyse(true)">L'erreur est dans le NET : il devrait être inférieur au BRUT.</button>
-                    <button class="btn-choice" onclick="checkAnalyse(false)">L'erreur est dans le nom de l'entreprise.</button>
+                <h2>🏆 Tes Certifications</h2>
+                <div class="badge-grid">
+                    <div class="badge" id="b-reader">📜<br>Théoricien</div>
+                    <div class="badge" id="b-paie">💰<br>Comptable</div>
+                    <div class="badge" id="b-audit">🕵️<br>Auditeur</div>
+                    <div class="badge" id="b-master">👑<br>Master P3</div>
                 </div>
             </div>
         </section>
-
-        <section id="succes" class="section">
-            <div class="card">
-                <h2>🏆 Tes Badges de Compétences</h2>
-                <div class="badges-grid">
-                    <div class="badge" id="badge-reader"><div class="badge-icon">📖</div><br>Lecteur RH</div>
-                    <div class="badge" id="badge-chrono"><div class="badge-icon">⚡</div><br>Rapide</div>
-                    <div class="badge" id="badge-expert"><div class="badge-icon">🎓</div><br>Expert Paie</div>
-                </div>
-            </div>
-        </section>
-    </main>
+    </div>
 
     <script>
-        let xp = 0;
-        let level = 1;
-        let chronoTimer;
-
-        function showTab(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        let xp = 0; let lvl = 1;
+        function navigate(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
         }
-
-        function addXP(amount) {
-            xp += amount;
-            if(xp >= level * 200) { level++; xp = 0; alert("Niveau supérieur ! Niveau " + level); }
-            document.getElementById('xp-text').innerText = xp + " XP";
-            document.getElementById('xp-fill').style.width = (xp / (level*200) * 100) + "%";
-            document.getElementById('level').innerText = level;
+        function addXP(v) {
+            xp += v; if(xp >= 200) { lvl++; xp -= 200; alert("Niveau supérieur !"); }
+            document.getElementById('xp-bar').style.width = (xp/200*100) + "%";
+            document.getElementById('lvl-display').innerText = lvl;
         }
-
-        function unlockBadge(id) {
-            document.getElementById('badge-' + id).classList.add('unlocked');
-        }
-
-        // CHRONO LOGIC
-        const chronoQs = [
-            {q: "Délai DPAE ?", a: ["8j avant", "15j après"], c:0},
-            {q: "Le RUP est-il obligatoire ?", a: ["Oui", "Non"], c:0},
-            {q: "RGPD = ?", a: ["Données", "Ventes"], c:0}
-        ];
+        function unlock(id) { document.getElementById('b-'+id).classList.add('unlocked'); }
         
-        let timeLeft = 60;
-        function startChrono() {
-            document.getElementById('chrono-start').style.display = 'none';
-            document.getElementById('chrono-game').style.display = 'block';
-            nextChronoQ();
-            chronoTimer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timer').innerText = timeLeft + "s";
-                if(timeLeft <= 0) {
-                    clearInterval(chronoTimer);
-                    alert("Défi terminé !");
-                    unlockBadge('chrono');
-                }
-            }, 1000);
+        function checkPaie() {
+            const val = document.getElementById('input-paie').value;
+            if(val == "1872") { 
+                document.getElementById('paie-feedback').innerHTML = "✅ Correct ! (2400 * 0.78)";
+                addXP(60); unlock('paie');
+            } else { document.getElementById('paie-feedback').innerText = "❌ Calcul faux. Indice : déduisez 22% du brut."; }
         }
-
-        function nextChronoQ() {
-            let q = chronoQs[Math.floor(Math.random()*chronoQs.length)];
-            document.getElementById('chrono-q').innerText = q.q;
-            let optDiv = document.getElementById('chrono-opts');
-            optDiv.innerHTML = '';
-            q.a.forEach((o, i) => {
-                let b = document.createElement('button');
-                b.className = 'btn-choice';
-                b.innerText = o;
-                b.onclick = () => { if(i===q.c) addXP(20); nextChronoQ(); };
-                optDiv.appendChild(b);
-            });
-        }
-
-        function checkAnalyse(isCorrect) {
-            if(isCorrect) {
-                alert("Bravo ! Le salaire NET est toujours égal au BRUT - les COTISATIONS.");
-                addXP(100);
-                unlockBadge('expert');
-            } else {
-                alert("Réessaie !");
-            }
+        
+        function checkAudit(c) {
+            if(c) { alert("Parfait ! La VIP est indispensable au dossier de conformité."); addXP(50); unlock('audit'); if(lvl>=2) unlock('master'); }
+            else { alert("Inutile et non conforme au RGPD !"); }
         }
     </script>
 </body>
