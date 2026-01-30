@@ -2,84 +2,163 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Coach AGOrA RH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach AGOrA - Pôle 3 Administration du Personnel</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a2e; color: white; padding: 20px; text-align: center; }
-        .card { background: #16213e; border: 2px solid #48dbfb; border-radius: 15px; padding: 20px; margin: 10px; }
-        .btn { background: #48dbfb; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin: 5px; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1c2c; color: #f0f0f0; line-height: 1.6; }
+        header { background: #4a4e69; padding: 20px; text-align: center; border-bottom: 3px solid #9a8c98; }
+        .nav-container { display: flex; justify-content: center; background: #22223b; padding: 10px; position: sticky; top: 0; z-index: 100; }
+        .nav-btn { background: transparent; border: 2px solid #9a8c98; color: #f2e9e4; padding: 10px 20px; margin: 0 5px; border-radius: 25px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .nav-btn:hover, .nav-btn.active { background: #c9ada7; color: #22223b; border-color: #c9ada7; }
+        .main-content { max-width: 900px; margin: 30px auto; padding: 0 20px; }
         .section { display: none; }
-        .active { display: block; }
-        h1 { color: #48dbfb; }
+        .section.active { display: block; animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: #4a4e69; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .card h2 { color: #f2e9e4; margin-bottom: 15px; border-bottom: 1px solid #9a8c98; padding-bottom: 5px; }
+        .fiche-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #c9ada7; }
+        .option-btn { display: block; width: 100%; background: #22223b; border: 1px solid #9a8c98; color: white; padding: 12px; margin: 10px 0; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; }
+        .option-btn:hover { background: #4a4e69; }
+        #feedback { font-weight: bold; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; }
+        .success { background: #2d6a4f; color: white; display: block !important; }
+        .error { background: #a4161a; color: white; display: block !important; }
     </style>
 </head>
 <body>
 
-    <h1>💼 Coach AGOrA - Module RH</h1>
+<header>
+    <h1>💼 Coach AGOrA - Pôle 3</h1>
+    <p>Administration du Personnel (Unité U32)</p>
+</header>
 
-    <button class="btn" onclick="show('accueil')">🏠 Accueil</button>
-    <button class="btn" onclick="show('fiches')">📖 Fiches</button>
-    <button class="btn" onclick="show('quiz')">❓ Quiz</button>
+<nav class="nav-container">
+    <button class="nav-btn active" onclick="show('accueil')">🏠 Accueil</button>
+    <button class="nav-btn" onclick="show('fiches')">📖 Fiches Référentiel</button>
+    <button class="nav-btn" onclick="show('quiz')">❓ Quiz Compétences</button>
+</nav>
 
-    <div id="accueil" class="section active">
+<main class="main-content">
+
+    <section id="accueil" class="section active">
         <div class="card">
-            <h2>Bienvenue !</h2>
-            <p>Prêt pour réviser la gestion du personnel ?</p>
+            <h2>Prêt pour l'épreuve E32 ?</h2>
+            <p>Ce module interactif couvre l'ensemble du <strong>Pôle 3</strong> : Administration du personnel. [cite: 359, 843]</p>
+            <p style="margin-top:10px;">Vous allez travailler sur :</p>
+            <ul style="margin: 15px 30px;">
+                <li>Le suivi de la carrière (embauche, formation, départ). [cite: 363, 573]</li>
+                <li>Le suivi organisationnel (temps de travail, paie, déplacements). [cite: 368, 369]</li>
+                <li>L'activité sociale et le respect du RGPD. [cite: 370, 377]</li>
+            </ul>
         </div>
-    </div>
+    </section>
 
-    <div id="fiches" class="section">
+    <section id="fiches" class="section">
         <div class="card">
-            <h3>La DPAE</h3>
-            <p>Obligatoire avant l'embauche (URSSAF).</p>
-        </div>
-        <div class="card">
-            <h3>Le RUP</h3>
-            <p>Registre Unique du Personnel : obligatoire dès le 1er salarié.</p>
-        </div>
-    </div>
+            <h2>3.1 - Suivi de la carrière du personnel [cite: 363]</h2>
+            <div class="fiche-item">
+                <strong>Formalités :</strong> DPAE à l'embauche, mise à jour du RUP (Registre Unique du Personnel), gestion des dossiers individuels et organisation des visites médicales (VIP). [cite: 365, 366, 566]
+            </div>
+            <div class="fiche-item">
+                <strong>Formation :</strong> Planification logistique des actions de formation (présentiel ou distanciel) et suivi administratif. [cite: 367, 567, 443]
+            </div>
 
-    <div id="quiz" class="section">
-        <div class="card">
-            <h3 id="q">Question...</h3>
-            <div id="opts"></div>
-            <p id="res"></p>
-        </div>
-    </div>
+            <h2>3.2 - Suivi organisationnel et financier [cite: 368]</h2>
+            <div class="fiche-item">
+                <strong>Gestion du temps :</strong> Planification des temps de présence, décompte des absences et gestion des congés selon les contraintes de service. [cite: 668, 408]
+            </div>
+            <div class="fiche-item">
+                <strong>Paie :</strong> Collecte des éléments variables (heures supplémentaires, primes) pour préparer le bulletin et suivi des enregistrements sur PGI. [cite: 671, 672, 443]
+            </div>
 
-    <script>
-        function show(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            <h2>3.3 - Activité sociale de l'organisation [cite: 370]</h2>
+            <div class="fiche-item">
+                <strong>Communication :</strong> Diffusion des informations sociales légales, mise à jour des tableaux de bord sociaux et rédaction d'écrits professionnels (notes, convocations). [cite: 371, 372, 676]
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="section">
+        <div class="card">
+            <h2 id="q-title">Question 1</h2>
+            <p id="q-text" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
+            <div id="q-options"></div>
+            <div id="feedback"></div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    function show(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.target.classList.add('active');
+        if(id === 'quiz') loadQuestion();
+    }
+
+    const quizData = [
+        {
+            q: "Quelle formalité doit être effectuée au plus tard 8 jours avant l'embauche d'un salarié ?",
+            o: ["Le Registre Unique du Personnel", "La DPAE (URSSAF)", "L'entretien annuel"],
+            c: 1,
+            e: "La DPAE est obligatoire avant toute embauche. [cite: 361, 365]"
+        },
+        {
+            q: "Dans quel document obligatoire doit-on inscrire les salariés par ordre chronologique d'arrivée ?",
+            o: ["Le DUERP", "Le contrat de travail", "Le Registre Unique du Personnel (RUP)"],
+            c: 2,
+            e: "Le RUP est obligatoire dès le premier salarié et liste les entrées/sorties. [cite: 361, 666]"
+        },
+        {
+            q: "Quel règlement impose la stricte confidentialité des dossiers du personnel (RIB, adresse, santé) ?",
+            o: ["Le RGPD", "Le règlement intérieur", "La charte informatique"],
+            c: 0,
+            e: "Le RGPD protège les données personnelles sensibles des salariés. [cite: 362, 377, 570]"
+        },
+        {
+            q: "Parmi ces éléments, lequel est nécessaire pour préparer le bulletin de paie ?",
+            o: ["L'organigramme", "Le relevé des heures supplémentaires", "La convention de stage"],
+            c: 1,
+            e: "Les variables de paie (heures sup, absences) sont indispensables au calcul du salaire. [cite: 361, 671]"
         }
+    ];
 
-        const questions = [
-            { q: "Délai max pour la DPAE ?", a: ["8 jours avant", "15 jours après"], c: 0 },
-            { q: "Le RUP est-il obligatoire ?", a: ["Oui", "Non"], c: 0 }
-        ];
+    let currentQ = 0;
 
-        let index = 0;
-        function loadQ() {
-            const q = questions[index];
-            document.getElementById('q').innerText = q.q;
-            const o = document.getElementById('opts');
-            o.innerHTML = '';
-            q.a.forEach((opt, i) => {
-                const b = document.createElement('button');
-                b.className = 'btn';
-                b.innerText = opt;
-                b.onclick = () => {
-                    if(i === q.c) {
-                        document.getElementById('res').innerText = "✅ Bravo !";
-                        index = (index + 1) % questions.length;
-                        setTimeout(loadQ, 1000);
-                    } else {
-                        document.getElementById('res').innerText = "❌ Faux !";
-                    }
-                };
-                o.appendChild(b);
-            });
+    function loadQuestion() {
+        const data = quizData[currentQ];
+        document.getElementById('q-title').innerText = "Question " + (currentQ + 1);
+        document.getElementById('q-text').innerText = data.q;
+        const options = document.getElementById('q-options');
+        options.innerHTML = '';
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'none';
+
+        data.o.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(i);
+            options.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx) {
+        const data = quizData[currentQ];
+        const feedback = document.getElementById('feedback');
+        if(idx === data.c) {
+            feedback.className = 'success';
+            feedback.innerHTML = "✅ Correct ! " + data.e;
+            currentQ = (currentQ + 1) % quizData.length;
+            setTimeout(loadQuestion, 3000);
+        } else {
+            feedback.className = 'error';
+            feedback.innerHTML = "❌ Mauvaise réponse. Réessayez !";
         }
-        loadQ();
-    </script>
+    }
+</script>
+
 </body>
 </html>
