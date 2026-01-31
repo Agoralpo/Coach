@@ -9,47 +9,29 @@
         :root { --primary: #00d2d3; --secondary: #feca57; --accent: #ff6b6b; --bg: #0f172a; --card: #1e293b; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
-
-        /* Header & Gamification */
         .header { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary); }
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
         .xp-bar-container { width: 140px; height: 10px; background: #334155; border-radius: 5px; margin-top: 5px; overflow: hidden; }
         .xp-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-        /* Navigation */
         nav { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem; background: #1e293b; flex-wrap: wrap; }
         .nav-link { background: #334155; border: none; color: #94a3b8; padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.85rem; }
         .nav-link.active { background: var(--primary); color: var(--bg); transform: scale(1.05); }
-
-        /* Container */
         .container { max-width: 950px; margin: 0 auto; padding: 2rem; }
         section { display: none; }
         section.active { display: block; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* UI Cards */
         .card { background: var(--card); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .scenario-tag { display: inline-block; background: var(--secondary); color: #000; padding: 3px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; }
-        
-        /* Interaction Modules */
         .option { width: 100%; text-align: left; padding: 1.2rem; margin-bottom: 0.8rem; background: #334155; border: 2px solid transparent; color: #cbd5e1; border-radius: 15px; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
         .option:hover { border-color: var(--primary); background: #475569; }
         .option.correct { background: var(--success); color: white; border-color: #34d399; }
         .option.wrong { background: var(--accent); color: white; border-color: #f87171; }
-        
-        .remediation { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; background: rgba(0, 210, 211, 0.1); border: 1px solid var(--primary); line-height: 1.5; }
-        
-        /* Skills Wall */
+        .remediation { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; background: rgba(0, 210, 211, 0.1); border: 1px solid var(--primary); }
         .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
         .badge { background: #334155; padding: 1.5rem; border-radius: 20px; text-align: center; opacity: 0.2; filter: grayscale(1); transition: 0.8s; border: 2px solid transparent; }
         .badge.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--secondary); background: rgba(254, 202, 87, 0.05); }
-        .badge-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-
-        /* Course Blocks */
         .cours-block { background: #0f172a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border-left: 6px solid var(--primary); }
         .cours-block h3 { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; }
-        .cours-block ul { list-style: none; padding-left: 0; }
-        .cours-block li::before { content: "• "; color: var(--secondary); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -64,78 +46,84 @@
 
     <nav>
         <button class="nav-link active" onclick="nav('home')">🏠 Accueil</button>
-        <button class="nav-link" onclick="nav('cours')">📖 Cours & Méthode</button>
+        <button class="nav-link" onclick="nav('cours')">📖 Cours P3</button>
         <button class="nav-link" onclick="nav('cas')">🎯 Cas Pratiques</button>
-        <button class="nav-link" onclick="nav('simulation')">⚙️ Simulation Paie</button>
-        <button class="nav-link" onclick="nav('certifs')">📜 Certifications</button>
+        <button class="nav-link" onclick="nav('simulation')">⚙️ Calculateur Paie</button>
+        <button class="nav-link" onclick="nav('audit')">🕵️ Audit Dossier</button>
+        <button class="nav-link" onclick="nav('lexique')">📚 Lexique</button>
+        <button class="nav-link" onclick="nav('certifs')">📜 Succès</button>
     </nav>
 
     <div class="container">
         <section id="home" class="active">
             <div class="card" style="text-align: center;">
-                <h1 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--primary);">Prêt pour l'Unité U32 ?</h1>
-                <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem;">Système de certification expert pour l'Administration du Personnel.</p>
+                <h1 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--primary);">Spécialiste Pôle 3</h1>
+                <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem;">Maîtrisez l'Unité U32 : Administrer le personnel.</p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
-                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.1</strong><br>Carrière & Recrutement</div>
-                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.2</strong><br>Paie & Temps</div>
-                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.3</strong><br>Dialogue Social</div>
+                    <div class="card" style="padding: 1rem;"><strong>3.1</strong><br>Carrière & Recrutement</div>
+                    <div class="card" style="padding: 1rem;"><strong>3.2</strong><br>Paie & Temps</div>
+                    <div class="card" style="padding: 1rem;"><strong>3.3</strong><br>Dialogue Social</div>
                 </div>
-                <button class="nav-link" style="margin-top: 2rem; background: var(--primary); color: #000; padding: 1.2rem 3rem; font-size: 1.1rem;" onclick="nav('cas')">Lancer la mission</button>
             </div>
         </section>
 
         <section id="cours">
             <div class="card">
-                <h2>📖 Manuel de l'Inspecteur : Pôle 3</h2>
-                
+                <h2>📖 Manuel AGOrA : Pôle 3</h2>
                 <div class="cours-block">
-                    <h3>3.1 - Suivi de la carrière</h3>
-                    <ul>
-                        <li><strong>DPAE :</strong> À envoyer à l'URSSAF AVANT toute prise de poste (8j max).</li>
-                        <li><strong>Dossier Personnel :</strong> Doit être actualisé (adresse, RIB, diplômes) mais respecter le RGPD.</li>
-                        <li><strong>Visite Médicale :</strong> La VIP doit avoir lieu sous 3 mois après l'embauche.</li>
-                    </ul>
+                    <h3>3.1 - Le Recrutement & Intégration</h3>
+                    <p>Le recrutement interne s'adresse aux membres déjà présents, l'externe à ceux étrangers à l'entreprise. La DPAE est obligatoire sous 8j avant l'embauche auprès de l'URSSAF.</p>
                 </div>
-
                 <div class="cours-block">
-                    <h3>3.2 - Suivi Financier (Paie)</h3>
-                    <ul>
-                        <li><strong>Variables de Paie :</strong> Heures sup (+25% ou +50%), primes, absences, tickets resto.</li>
-                        <li><strong>Échantillonnage :</strong> Calcul : Net = Brut - Cotisations (environ 22% pour un non-cadre).</li>
-                        <li><strong>Documents de sortie :</strong> Certificat, Attestation Pôle Emploi, Solde de tout compte.</li>
-                    </ul>
+                    <h3>3.2 - Gestion Administrative & Paie</h3>
+                    <p>Le <strong>RUP (Registre Unique)</strong> est obligatoire dès le 1er salarié. L'avenant est obligatoire pour toute modification d'un élément essentiel (salaire, durée, lieu).</p>
                 </div>
-
                 <div class="cours-block">
                     <h3>3.3 - Relations Sociales</h3>
-                    <ul>
-                        <li><strong>Élections CSE :</strong> Obligatoire si l'effectif dépasse 11 salariés pendant 12 mois.</li>
-                        <li><strong>DUERP :</strong> Document listant les risques et actions de prévention.</li>
-                        <li><strong>Affichage :</strong> Inspection du travail, Services de secours, Consignes incendie.</li>
-                    </ul>
+                    <p>Le <strong>CSE</strong> est obligatoire dès 11 salariés. Le <strong>RGPD</strong> impose une protection stricte des données personnelles des employés.</p>
                 </div>
-                <button class="nav-link" style="width: 100%;" onclick="addXP(50); unlock('reader')">Valider les acquis théoriques (+50 XP)</button>
+                <button class="nav-link" style="width: 100%; background: var(--primary); color: #1e293b;" onclick="addXP(50); unlock('reader')">Valider la théorie (+50 XP)</button>
             </div>
         </section>
 
         <section id="cas">
             <div class="card">
-                <span id="cas-tag" class="scenario-tag">ORGANISATION</span>
+                <span id="cas-tag" class="scenario-tag">SITUATION</span>
                 <h2 id="cas-q" style="margin-bottom: 2rem;">Question technique</h2>
                 <div id="cas-options"></div>
                 <div id="cas-rem" class="remediation"></div>
-                <button id="next-cas" class="nav-link" style="display:none; width: 100%; margin-top: 1.5rem; background: var(--primary); color: #000;" onclick="nextCas()">Cas Suivant ➔</button>
+                <button id="next-cas" class="nav-link" style="display:none; width: 100%; margin-top: 1.5rem; background: var(--primary); color: #000;" onclick="nextCas()">Suivant ➔</button>
             </div>
         </section>
 
         <section id="simulation">
             <div class="card" style="text-align: center;">
-                <span class="scenario-tag">EXERCICE DE PAIE</span>
-                <h2>Calcul du Salaire de l'Apprenti</h2>
-                <p style="margin: 1rem 0;">M. Lamine est apprenti. Son salaire brut est de <strong>1200 €</strong>. <br>Étant apprenti, il est <strong>exonéré</strong> de cotisations salariales (dans la limite du plafond).</p>
-                <div class="cours-block">Combien doit-on lui verser en <strong>Net à Payer</strong> ?</div>
-                <input type="number" id="input-calc" style="padding: 12px; border-radius: 8px; border: 2px solid var(--primary); background: #0f172a; color: white; width: 150px; text-align: center; font-size: 1.2rem;">
-                <button class="nav-link" onclick="checkSim()">Valider le montant</button>
+                <span class="scenario-tag">CAS GLORIA MIOTY</span>
+                <h2>Calcul du Salaire de Base Brut</h2>
+                <p style="margin: 1rem 0;">Mme Mioty a un taux horaire de <strong>18,59 €</strong> pour <strong>151,67 h</strong> mensuelles.</p>
+                <div class="cours-block">Quel est son salaire de base (arrondi au centime) ?</div>
+                <input type="number" id="input-calc" step="0.01" style="padding: 12px; border-radius: 8px; border: 2px solid var(--primary); background: #0f172a; color: white; width: 180px; text-align: center; font-size: 1.2rem;">
+                <button class="nav-link" onclick="checkSim()">Vérifier le montant</button>
+            </div>
+        </section>
+
+        <section id="audit">
+            <div class="card">
+                <h2>🕵️ Audit de Dossier (RGPD)</h2>
+                <p style="margin-bottom: 1rem;">Vous analysez un dossier salarié. Lequel de ces documents est <strong>INTERDIT</strong> par le RGPD ?</p>
+                <button class="option" onclick="addXP(50); unlock('audit'); alert('Correct ! Les opinions politiques sont des données sensibles interdites.')">Détails des opinions politiques</button>
+                <button class="option" onclick="alert('Faux. Le RIB est nécessaire pour la paie.')">Copie du RIB</button>
+                <button class="option" onclick="alert('Faux. Le diplôme justifie la qualification.')">Copie du diplôme</button>
+            </div>
+        </section>
+
+        <section id="lexique">
+            <div class="card">
+                <h2>📚 Lexique de l'Inspecteur</h2>
+                <div class="cours-block"><strong>Avenant</strong> : Acte écrit modifiant ou complétant le contrat initial.</div>
+                <div class="cours-block"><strong>DPAE</strong> : Déclaration Préalable à l'Embauche (obligatoire URSSAF).</div>
+                <div class="cours-block"><strong>RUP</strong> : Registre Unique du Personnel (chronologique et indélébile).</div>
+                <div class="cours-block"><strong>Onboarding</strong> : Processus d'accueil et d'intégration.</div>
             </div>
         </section>
 
@@ -143,10 +131,10 @@
             <div class="card">
                 <h2>📜 Vos Certifications Professionnelles</h2>
                 <div class="badge-grid">
-                    <div class="badge" id="b-reader"><div class="badge-icon">📖</div>Théoricien RH</div>
-                    <div class="badge" id="b-cas"><div class="badge-icon">🎯</div>Expert Terrain</div>
-                    <div class="badge" id="b-paie"><div class="badge-icon">💰</div>Gestionnaire Paie</div>
-                    <div class="badge" id="b-master"><div class="badge-icon">👑</div>Major AGOrA</div>
+                    <div class="badge" id="b-reader"><div class="badge-icon">📖</div>Théoricien</div>
+                    <div class="badge" id="b-cas"><div class="badge-icon">🎯</div>Praticien</div>
+                    <div class="badge" id="b-paie"><div class="badge-icon">💰</div>Comptable</div>
+                    <div class="badge" id="b-audit"><div class="badge-icon">🕵️</div>Auditeur</div>
                 </div>
             </div>
         </section>
@@ -154,36 +142,11 @@
 
     <script>
         let xp = 0; let lvl = 1; let current = 0;
-        
         const scenarios = [
-            {
-                tag: "LOGISTI-SUD (ENTRÉE)",
-                q: "Un nouveau préparateur de commandes arrive demain à 8h. Quelle action est prioritaire ?",
-                o: ["Lui préparer ses chaussures de sécurité", "Valider la DPAE sur le portail de l'URSSAF", "Lui faire visiter les locaux"],
-                c: 1,
-                r: "La DPAE est l'acte fondateur du contrat. Sans elle, l'embauche est considérée comme du travail dissimulé."
-            },
-            {
-                tag: "ASSOCIATION GREEN-ACT (SANTÉ)",
-                q: "Une salariée se blesse légèrement avec un massicot. Sous quel délai devez-vous déclarer l'accident ?",
-                o: ["48 heures", "24 heures", "7 jours"],
-                c: 0,
-                r: "L'employeur dispose de 48h (hors dimanches et jours fériés) pour déclarer un accident du travail."
-            },
-            {
-                tag: "START-UP INNOVA (RGPD)",
-                q: "Un manager vous demande la liste des adresses personnelles et des numéros de téléphone de son équipe. Que faites-vous ?",
-                o: ["Vous lui donnez immédiatement par mail", "Vous refusez car ce sont des données privées protégées", "Vous lui demandez pourquoi"],
-                c: 1,
-                r: "Le RGPD limite l'accès aux données personnelles. Seul le service RH peut les manipuler, sauf nécessité de service absolue."
-            },
-            {
-                tag: "CABINET JURIDI-PLUS (FIN DE CONTRAT)",
-                q: "Un salarié démissionne. Lequel de ces documents n'est PAS obligatoire à son départ ?",
-                o: ["L'attestation Pôle Emploi", "Le certificat de travail", "Une lettre de recommandation"],
-                c: 2,
-                r: "Les 3 documents obligatoires sont : Certificat, Attestation Pôle Emploi et Solde de tout compte. La recommandation est facultative."
-            }
+            {tag: "RECRUTEMENT", q: "Quelle est la définition d'une fiche de poste ?", o: ["Le CV du candidat", "Description des missions et tâches", "Le profil idéal"], c: 1, r: "La fiche de poste décrit les missions, les tâches et la place dans l'organigramme."},
+            {tag: "ADMINISTRATIF", q: "Le RUP doit être conservé combien de temps après le départ d'un salarié ?", o: ["1 an", "5 ans", "10 ans"], c: 1, r: "Le registre du personnel doit être conservé pendant 5 ans."},
+            {tag: "JURIDIQUE", q: "Un avenant est obligatoire si on change quel élément ?", o: ["Le numéro de téléphone", "La rémunération brute", "La banque du salarié"], c: 1, r: "La rémunération est un élément essentiel du contrat exigeant un avenant."},
+            {tag: "DÉPLACEMENT", q: "Quel document couvre le salarié en cas d'accident lors d'une mission ?", o: ["Le billet de train", "L'ordre de mission", "La facture hôtel"], c: 1, r: "L'ordre de mission est indispensable pour la protection sociale et le remboursement."}
         ];
 
         function nav(id) {
@@ -195,8 +158,7 @@
         }
 
         function addXP(v) {
-            xp += v;
-            if(xp >= 200) { lvl++; xp -= 200; alert("Niveau supérieur atteint !"); }
+            xp += v; if(xp >= 200) { lvl++; xp -= 200; alert("Niveau supérieur !"); }
             document.getElementById('xp-fill').style.width = (xp/200*100) + "%";
             document.getElementById('lvl').innerText = "NIV. " + lvl;
         }
@@ -211,7 +173,6 @@
             optDiv.innerHTML = '';
             document.getElementById('cas-rem').style.display = 'none';
             document.getElementById('next-cas').style.display = 'none';
-
             data.o.forEach((opt, i) => {
                 const btn = document.createElement('button');
                 btn.className = 'option';
@@ -225,18 +186,11 @@
             const data = scenarios[current];
             const btns = document.querySelectorAll('.option');
             btns.forEach(b => b.style.pointerEvents = 'none');
-            
             const rem = document.getElementById('cas-rem');
             rem.style.display = 'block';
-            rem.innerHTML = `<strong>Analyse de l'Inspecteur :</strong><br>${data.r}`;
-
-            if(idx === data.c) {
-                btns[idx].classList.add('correct');
-                addXP(40);
-            } else {
-                btns[idx].classList.add('wrong');
-                btns[data.c].classList.add('correct');
-            }
+            rem.innerHTML = `<strong>Remédiation :</strong> ${data.r}`;
+            if(idx === data.c) { btns[idx].classList.add('correct'); addXP(40); }
+            else { btns[idx].classList.add('wrong'); btns[data.c].classList.add('correct'); }
             document.getElementById('next-cas').style.display = 'block';
         }
 
@@ -247,12 +201,12 @@
         }
 
         function checkSim() {
-            const val = document.getElementById('input-calc').value;
-            if(val == "1200") {
-                alert("✅ Parfait ! Un apprenti ne paie pas de cotisations sociales (sauf dépassement du seuil). Brut = Net.");
-                addXP(100); unlock('paie'); if(lvl >= 2) unlock('master');
+            const val = parseFloat(document.getElementById('input-calc').value);
+            if(val === 2819.54) {
+                alert("✅ Bravo ! Calcul exact : 18.59 * 151.67 = 2819.54 €");
+                addXP(100); unlock('paie');
             } else {
-                alert("❌ Réfléchissez... Relisez la règle sur l'exonération des apprentis.");
+                alert("❌ Erreur. Multipliez le taux par le nombre d'heures.");
             }
         }
     </script>
