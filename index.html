@@ -3,284 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGORA Master - Système PGI v4.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>AGORA Master - Système Intégré v5.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pgi-blue: #2b5797; --pgi-dark: #1e1e1e; --pgi-gray: #f3f3f3;
-            --pgi-border: #d2d2d2; --success: #107c10; --error: #a80000;
+            --pgi-blue: #2563eb; --pgi-dark: #0f172a; --pgi-bg: #f8fafc;
+            --accent: #8b5cf6; --cyan: #06b6d4; --pink: #ec4899;
+            --success: #10b981; --error: #ef4444; --text: #1e293b;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: var(--pgi-gray); color: #333; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--pgi-bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Barre Latérale PGI */
-        nav { width: 240px; background: var(--pgi-dark); color: white; display: flex; flex-direction: column; }
-        .nav-header { padding: 20px; background: var(--pgi-blue); font-weight: 700; font-size: 1.2rem; }
-        .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #333; transition: 0.2s; font-size: 0.9rem; }
-        .nav-item:hover, .nav-item.active { background: #3e3e3e; border-left: 4px solid var(--pgi-blue); }
+        /* SIDEBAR & MOBILE BURGER */
+        .sidebar { 
+            width: 280px; background: var(--pgi-dark); color: white; display: flex; 
+            flex-direction: column; transition: 0.3s; z-index: 1001;
+        }
+        .sidebar-header { padding: 25px; background: var(--pgi-blue); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
+        .nav-item { padding: 15px 25px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 12px; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); border-left: 5px solid var(--cyan); }
+        
+        .burger-close { display: none; cursor: pointer; font-size: 1.5rem; }
 
-        /* Contenu Principal */
-        main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        .top-bar { background: white; padding: 10px 25px; border-bottom: 1px solid var(--pgi-border); display: flex; justify-content: space-between; align-items: center; }
-        .workspace { padding: 30px; max-width: 900px; margin: 0 auto; width: 100%; }
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -280px; height: 100%; width: 280px; }
+            .sidebar.open { left: 0; }
+            .burger-close { display: block; }
+        }
 
-        /* Widgets & Cards */
-        .widget { background: white; border: 1px solid var(--pgi-border); border-radius: 2px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .widget-h2 { font-size: 1.1rem; border-bottom: 2px solid var(--pgi-blue); padding-bottom: 10px; margin-bottom: 15px; color: var(--pgi-blue); text-transform: uppercase; }
+        /* MAIN CONTENT */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        .top-bar { padding: 15px 25px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .menu-toggle { font-size: 1.5rem; cursor: pointer; display: none; color: var(--pgi-dark); }
+        @media (max-width: 768px) { .menu-toggle { display: block; } }
 
-        /* Quiz UI */
-        .option { padding: 12px 15px; border: 1px solid var(--pgi-border); margin: 8px 0; cursor: pointer; transition: 0.2s; background: #fff; }
-        .option:hover { background: #f9f9f9; border-color: var(--pgi-blue); }
-        .correct { background: #dff6dd !important; border-color: var(--success) !important; color: var(--success); font-weight: 600; }
-        .incorrect { background: #fde7e9 !important; border-color: var(--error) !important; color: var(--error); }
-        .hidden { display: none; }
-        .btn-pgi { background: var(--pgi-blue); color: white; border: none; padding: 10px 20px; cursor: pointer; font-weight: 600; margin-top: 15px; }
+        .xp-display { background: var(--accent); color: white; padding: 6px 15px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
 
-        /* Flashcards PGI Style */
-        .fc-container { perspective: 1000px; width: 100%; height: 200px; cursor: pointer; }
-        .fc-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .workspace { padding: 20px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .widget { background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .widget-title { font-size: 0.9rem; font-weight: 800; color: var(--pgi-blue); text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; border-left: 4px solid var(--pgi-blue); padding-left: 10px; }
+
+        /* OPTIONS & LUDIQUE */
+        .option { padding: 15px; border: 2px solid #f1f5f9; border-radius: 10px; margin: 10px 0; cursor: pointer; transition: 0.2s; background: #f8fafc; font-weight: 600; }
+        .option:hover { border-color: var(--pgi-blue); background: #eff6ff; }
+        .correct { border-color: var(--success) !important; background: #ecfdf5 !important; color: var(--success); }
+        .incorrect { border-color: var(--error) !important; background: #fef2f2 !important; color: var(--error); }
+        .btn-pgi { background: var(--pgi-blue); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 15px; }
+        
+        /* FLASHCARDS */
+        .fc-container { perspective: 1000px; height: 260px; cursor: pointer; margin: 20px 0; }
+        .fc-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .fc-inner.flipped { transform: rotateY(180deg); }
-        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; border: 1px solid var(--pgi-border); border-radius: 4px; text-align: center; }
-        .fc-front { background: white; color: var(--pgi-blue); font-weight: 700; font-size: 1.4rem; }
-        .fc-back { background: var(--pgi-blue); color: white; transform: rotateY(180deg); }
+        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 30px; border-radius: 15px; border: 2px solid var(--pgi-blue); }
+        .fc-front { background: var(--pgi-blue); color: white; font-weight: 800; font-size: 1.4rem; }
+        .fc-back { background: white; color: var(--text); transform: rotateY(180deg); font-size: 1.1rem; }
 
-        #timer { font-family: monospace; font-size: 1.5rem; color: var(--error); font-weight: bold; }
+        .hidden { display: none; }
+        #timer { font-weight: 800; color: var(--error); font-family: 'Orbitron', sans-serif; font-size: 1.6rem; text-align: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="nav-header">AGORA MASTER PGI</div>
-    <div class="nav-item active" onclick="showSec('dash')">Tableau de bord</div>
-    <div class="nav-item" onclick="showSec('daily')">Défi Quotidien</div>
-    <div class="nav-item" onclick="showSec('quiz')">Entraînement Thématique</div>
-    <div class="nav-item" onclick="showSec('flash')">Lexique Technique</div>
-    <div class="nav-item" onclick="showSec('chrono')">Cession Chronométrée</div>
-    <div class="nav-item" onclick="showSec('fiches')">Base Documentaire</div>
-</nav>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            AGORA MASTER 
+            <span class="burger-close" onclick="toggleMenu()">✕</span>
+        </div>
+        <div class="nav-item active" onclick="nav('dash')">📊 Dashboard</div>
+        <div class="nav-item" onclick="nav('daily')">🎯 Défi Aléatoire</div>
+        <div class="nav-item" onclick="nav('fiches')">📖 Fiches Ressources</div>
+        <div class="nav-item" onclick="nav('flash')">🃏 Lexique / Flashcards</div>
+        <div class="nav-item" onclick="nav('quiz')">❓ Entraînement</div>
+        <div class="nav-item" onclick="nav('chrono')">⏱️ Défi Chrono</div>
+    </nav>
 
-<main>
-    <div class="top-bar">
-        <div id="breadcrumb">Module : Gestion des RH</div>
-        <div id="user-stats">Score Session : <span id="score">0</span> XP</div>
-    </div>
+    <div class="main-content">
+        <header class="top-bar">
+            <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+            <div id="breadcrumb" style="font-weight:600; opacity:0.6;">Système de Gestion RH</div>
+            <div class="xp-display"><span id="xp">0</span> XP</div>
+        </header>
 
-    <div class="workspace">
-        <section id="sec-dash" class="animate">
-            <div class="widget">
-                <h2 class="widget-h2">Résumé de l'activité</h2>
-                <p>Bienvenue dans l'interface de gestion. Sélectionnez un module dans la barre latérale pour commencer vos travaux administratifs.</p>
-            </div>
-        </section>
-
-        <section id="sec-daily" class="hidden animate">
-            <div class="widget">
-                <h2 class="widget-h2" id="daily-title">Chargement du scénario...</h2>
-                <p id="daily-desc" style="margin-bottom:20px;"></p>
-                <div id="daily-action"></div>
-            </div>
-        </section>
-
-        <section id="sec-quiz" class="hidden animate">
-            <div id="quiz-menu" class="widget">
-                <h2 class="widget-h2">Sélecteur de module</h2>
-                <button class="option" style="width:100%" onclick="startQuiz('recrutement')">Module 3.1 : Recrutement & Intégration</button>
-                <button class="option" style="width:100%" onclick="startQuiz('admin')">Module 3.1 : Gestion Administrative</button>
-                <button class="option" style="width:100%" onclick="startQuiz('deplacements')">Module 3.2 : Organisation des Déplacements</button>
-            </div>
-            <div id="quiz-engine" class="widget hidden">
-                <div id="q-progress" style="font-size:0.8rem; margin-bottom:10px;"></div>
-                <h3 id="q-text" style="margin-bottom:20px;"></h3>
-                <div id="q-options"></div>
-                <div id="q-feedback" class="hidden">
-                    <p id="q-expl" style="background:#f9f9f9; padding:10px; border-left:4px solid var(--pgi-blue); margin-top:15px;"></p>
-                    <button class="btn-pgi" onclick="nextQ()">Passer à l'étape suivante</button>
+        <div class="workspace">
+            <section id="sec-dash">
+                <div class="widget">
+                    <h2 class="widget-title">État du Système</h2>
+                    <p>Interface opérationnelle. Prêt pour les révisions du Pôle 3.</p>
                 </div>
-            </div>
-        </section>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                    <div class="widget" style="cursor:pointer;" onclick="nav('daily')"><h3>Défi du jour</h3><p style="font-size:0.8rem; opacity:0.7;">Mission Manager</p></div>
+                    <div class="widget" style="cursor:pointer;" onclick="nav('chrono')"><h3>Chrono Elite</h3><p style="font-size:0.8rem; opacity:0.7;">Test de vitesse</p></div>
+                </div>
+            </section>
 
-        <section id="sec-flash" class="hidden animate">
-            <div class="widget">
-                <h2 class="widget-h2">Lexique des termes RH</h2>
-                <div class="fc-container" onclick="document.getElementById('fc-inner').classList.toggle('flipped')">
-                    <div class="fc-inner" id="fc-inner">
-                        <div class="fc-front" id="fc-f"></div>
-                        <div class="fc-back" id="fc-b"></div>
+            <section id="sec-daily" class="hidden">
+                <div class="widget">
+                    <h2 class="widget-title" id="d-title">Initialisation...</h2>
+                    <p id="d-desc" style="margin-bottom:20px; font-weight:600; font-size:1.1rem;"></p>
+                    <div id="d-area"></div>
+                </div>
+            </section>
+
+            <section id="sec-fiches" class="hidden">
+                <div id="fiches-render"></div>
+            </section>
+
+            <section id="sec-flash" class="hidden">
+                <div class="widget">
+                    <h2 class="widget-title">Lexique / Flashcards</h2>
+                    <div class="fc-container" onclick="this.querySelector('.fc-inner').classList.toggle('flipped')">
+                        <div class="fc-inner" id="fc-inner">
+                            <div class="fc-front" id="fc-f">Mot</div>
+                            <div class="fc-back" id="fc-b">Définition</div>
+                        </div>
+                    </div>
+                    <button class="btn-pgi" onclick="loadNextFC()">Terme suivant</button>
+                </div>
+            </section>
+
+            <section id="sec-quiz" class="hidden">
+                <div id="q-menu" class="widget">
+                    <h2 class="widget-title">Sélecteur de Module</h2>
+                    <div id="q-cats"></div>
+                </div>
+                <div id="q-play" class="widget hidden">
+                    <h3 id="q-text" style="margin-bottom:20px;"></h3>
+                    <div id="q-options"></div>
+                    <div id="q-feedback" class="hidden" style="margin-top:20px; padding:15px; background:#f8fafc; border-radius:10px; border-left:4px solid var(--pgi-blue);">
+                        <p id="q-expl"></p>
+                        <button class="btn-pgi" onclick="proceedQuiz()">Suivant</button>
                     </div>
                 </div>
-                <button class="btn-pgi" style="width:100%" onclick="nextFC()">Terme suivant</button>
-            </div>
-        </section>
+            </section>
 
-        <section id="sec-chrono" class="hidden animate">
-            <div class="widget" style="text-align:center;">
-                <h2 class="widget-h2">Mode Performance</h2>
-                <div id="timer">02:00</div>
-                <button id="chrono-start-btn" class="btn-pgi" onclick="initChrono()">Lancer la session (2 min)</button>
-                <div id="chrono-play" class="hidden" style="text-align:left; margin-top:20px;">
-                    <h3 id="chrono-q"></h3>
-                    <div id="chrono-opts"></div>
+            <section id="sec-chrono" class="hidden">
+                <div class="widget">
+                    <h2 class="widget-title">Épreuve de Vitesse</h2>
+                    <div id="timer">02:00</div>
+                    <button id="c-start" class="btn-pgi" onclick="startChronoChallenge()">Démarrer (Max questions / 2 min)</button>
+                    <div id="c-play" class="hidden">
+                        <h3 id="c-q" style="margin-bottom:20px;"></h3>
+                        <div id="c-opts"></div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="sec-fiches" class="hidden animate">
-            <div id="fiches-render"></div>
-        </section>
+            </section>
+        </div>
     </div>
-</main>
 
 <script>
-// --- DONNÉES COMPLÈTES (BASÉES SUR GUIDE RH) ---
-const bank = {
-    recrutement: [
-        { q: "Quelle est la différence fondamentale entre le recrutement interne et externe ?", o: ["L'interne est plus cher", "L'interne cible le personnel actuel, l'externe le marché du travail", "L'interne n'a pas d'entretien", "L'externe est réservé aux cadres"], a: 1, e: "Le recrutement interne concerne les salariés déjà présents dans l'organisation." },
-        { q: "Qu'est-ce qu'une 'Fiche de poste' ?", o: ["Le CV du candidat", "Portrait du candidat idéal", "Description des missions, tâches et place dans l'organigramme"], a: 2, e: "La fiche de poste définit le travail à accomplir et les liens hiérarchiques." },
-        { q: "Quelle formalité faire 8 jours avant l'embauche ?", o: ["Signature contrat", "DPAE", "Visite médicale"], a: 1, e: "La Déclaration Préalable à l'Embauche est obligatoire avant la prise de poste." }
+// --- DONNÉES EXHAUSTIVES ---
+const db = {
+    fiches: [
+        { t: "Fiche 1 : Recrutement & Intégration", c: "<b>Préparation :</b> Création de poste ou remplacement. Outils : <b>Fiche de poste</b> (missions, tâches, organigramme) et <b>Profil de poste</b> (candidat idéal, diplômes, savoir-être). <br><b>Modes :</b> Interne (valorisant, moins cher) vs Externe (idées neuves, vivier large). <br><b>Intégration :</b> DPAE obligatoire 8j avant l'embauche. Accueil : livret d'accueil, tuteur, Team Building." },
+        { t: "Fiche 2 : Gestion Administrative", c: "<b>Contrat de travail :</b> Obligations réciproques, immuable sans accord bilatéral. Mentions : identité, rémunération, durée, lieu, période d'essai. <br><b>Registre Unique :</b> Obligatoire dès le 1er salarié, indélébile, chronologique. Conservation : 5 ans après départ. <br><b>Avenant :</b> Obligatoire pour modif élément essentiel (Salaire, Lieu, Poste, Durée)." },
+        { t: "Fiche 3 : Organisation Déplacements", c: "<b>Analyse :</b> Contraintes temporelles, géographiques et financières. <br><b>Ordre de Mission :</b> Document obligatoire pour protection accident et remboursement frais. <br><b>Santé :</b> Carte Européenne d'Assurance Maladie (demande 15j avant pour l'UE)." },
+        { t: "Fiche 4 : Calculs & Paie", c: "<b>Salaire de base :</b> Taux horaire x Nombre d'heures (souvent 151,67h). <br><b>Salaire Brut :</b> Base + Primes + Avantages en nature (véhicule, repas). <br><b>Avantages en nature :</b> Soumis à cotisations sociales." }
     ],
-    admin: [
-        { q: "Sanction pour non-tenue du registre du personnel ?", o: ["135€", "750€ par salarié concerné", "Fermeture administrative"], a: 1, e: "La sanction s'applique par salarié manquant ou pour chaque mention incomplète." },
-        { q: "Quand l'avenant au contrat est-il obligatoire ?", o: ["Changement d'adresse", "Modification d'un élément essentiel (salaire, lieu, poste)", "Changement de RIB"], a: 1, e: "Toute modification d'un élément substantiel du contrat nécessite un avenant signé." }
+    lexique: [
+        { t: "DPAE", d: "Déclaration Préalable à l'Embauche (obligatoire 8j avant)." },
+        { t: "Onboarding", d: "Processus complet d'accueil et d'intégration d'un nouveau salarié." },
+        { t: "Avenant", d: "Modification officielle d'un contrat de travail existant." },
+        { t: "Ordre de Mission", d: "Document autorisant un déplacement pro et assurant la protection sociale." },
+        { t: "CEAM", d: "Carte Européenne d'Assurance Maladie (soins en Europe)." },
+        { t: "Registre Unique", d: "Document recensant chronologiquement toutes les entrées/sorties du personnel." },
+        { t: "Fiche de Poste", d: "Description précise des missions, tâches et liens hiérarchiques." },
+        { t: "Profil de Poste", d: "Portrait robot du candidat idéal (diplômes, compétences, savoir-être)." },
+        { t: "CROC", d: "Méthode d'appel : Contact, Raison, Objectif, Congé." },
+        { t: "RGPD", d: "Règlement Général sur la Protection des Données." },
+        { t: "PGI", d: "Progiciel de Gestion Intégré (ERP)." },
+        { t: "VIP", d: "Visite d'Information et de Prévention (remplace la visite médicale)." }
     ],
-    deplacements: [
-        { q: "Document couvrant l'accident en mission ?", o: ["Billet de train", "Ordre de mission", "Devis hôtel"], a: 1, e: "L'ordre de mission garantit la protection sociale du salarié en déplacement." }
+    quiz: {
+        recrutement: [
+            { q: "Quelle différence entre recrutement interne et externe ?", o: ["L'interne est plus cher", "L'externe cible le marché du travail", "L'interne n'a pas d'entretien"], a: 1, e: "L'externe s'adresse aux personnes hors personnel." },
+            { q: "Qu'est-ce qu'une fiche de poste ?", o: ["Un CV", "Une description des missions et organigramme", "Une annonce LinkedIn"], a: 1, e: "Elle décrit les tâches et la hiérarchie." }
+        ],
+        admin: [
+            { q: "Amende non-tenue registre ?", o: ["135€", "750€ par salarié", "Fermeture"], a: 1, e: "750€ d'amende par salarié concerné." },
+            { q: "Quand l'avenant est-il obligatoire ?", o: ["Changement de téléphone", "Modification salaire ou lieu", "Changement de banque"], a: 1, e: "Obligatoire pour tout élément essentiel." }
+        ]
+    },
+    daily: [
+        { t: "Calcul Gloria", d: "Gloria (18,59€/h) travaille 151,67h. Calculez son salaire brut.", ans: 2819.54, type: "calc", e: "18,59 x 151,67 = 2819,54€." },
+        { t: "Audit Registre", d: "Luis (entrée 10/01) est inscrit après Sophie (14/01). Pourquoi est-ce faux ?", o: ["Noms mal écrits", "Ordre chronologique non respecté", "Légal"], a: 1, e: "Le registre doit suivre l'ordre d'embauche." },
+        { t: "Déplacement Espagne", d: "Un salarié majeur a une CNI de 2010. Est-elle valide en 2024 ?", o: ["Oui", "Non"], a: 0, e: "La validité est de 15 ans pour les majeurs." }
     ]
 };
 
-const daily = [
-    { t: "Calcul Paie : Gloria Mioty", d: "Gloria (18,59€/h) travaille 151,67h mensuelles. Calculez son salaire de base brut.", type: "calc", ans: 2819.54 },
-    { t: "Audit Registre", d: "L'inspecteur note une inscription au crayon à papier. Verdict ?", o: ["Acceptable", "Non conforme (doit être indélébile)"], ans: 1 },
-    { t: "Formalité Embauche", d: "Layla Bamara arrive demain. Quelle action URSSAF est prioritaire ?", o: ["DPAE", "DUE"], ans: 0 }
-];
-
-const flash = [
-    { t: "DPAE", d: "Déclaration Préalable à l'Embauche. Obligatoire à l'URSSAF avant toute embauche." },
-    { t: "Onboarding", d: "Processus complet d'accueil et d'intégration d'un nouveau collaborateur." },
-    { t: "Avenant", d: "Document écrit constatant une modification du contrat de travail initial." },
-    { t: "Ordre de Mission", d: "Document autorisant le déplacement et garantissant la protection sociale." },
-    { t: "CEAM", d: "Carte Européenne d'Assurance Maladie pour les soins au sein de l'UE." }
-];
-
-const fiches = [
-    { t: "Fiche 1 : Recrutement", c: "La préparation nécessite la définition du besoin. On utilise la fiche de poste (missions) et le profil de poste (candidat idéal). Le recrutement interne favorise la promotion, l'externe apporte des idées neuves." },
-    { t: "Fiche 2 : Gestion Administrative", c: "Le contrat fixe les obligations réciproques. Le registre unique du personnel est obligatoire dès le premier salarié et doit être tenu par ordre chronologique." }
-];
-
-// --- LOGIQUE MOTEUR ---
+// --- LOGIQUE SYSTÈME ---
 let state = { xp: 0, qSet: [], qIdx: 0, fcIdx: 0, timer: null };
 
-function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+function shuffle(a) { return a.sort(() => Math.random() - 0.5); }
 
-function showSec(id) {
+function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
+
+function nav(id) {
     document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('sec-' + id).classList.remove('hidden');
-    if(id === 'flash') loadFC();
-    if(id === 'daily') loadDaily();
+    if(id === 'flash') loadNextFC();
+    if(id === 'daily') loadRandomDaily();
     if(id === 'fiches') renderFiches();
-}
-
-// QUIZ
-function startQuiz(cat) {
-    state.qSet = shuffle([...bank[cat]]);
-    state.qIdx = 0;
-    document.getElementById('quiz-menu').classList.add('hidden');
-    document.getElementById('quiz-engine').classList.remove('hidden');
-    loadQ();
-}
-
-function loadQ() {
-    const q = state.qSet[state.qIdx];
-    document.getElementById('q-progress').innerText = `PROCESSUS : ÉTAPE ${state.qIdx + 1} SUR ${state.qSet.length}`;
-    document.getElementById('q-text').innerText = q.q;
-    document.getElementById('q-feedback').classList.add('hidden');
-    const box = document.getElementById('q-options');
-    box.innerHTML = "";
-    
-    // Shuffle options
-    const oIndices = shuffle([...Array(q.o.length).keys()]);
-    oIndices.forEach(i => {
-        const div = document.createElement('div');
-        div.className = 'option'; div.innerText = q.o[i];
-        div.onclick = () => checkQ(i, div);
-        box.appendChild(div);
-    });
-}
-
-function checkQ(idx, el) {
-    const q = state.qSet[state.qIdx];
-    const opts = document.querySelectorAll('#q-options .option');
-    opts.forEach(o => o.style.pointerEvents = 'none');
-    if(idx === q.a) { el.classList.add('correct'); state.xp += 100; }
-    else { el.classList.add('incorrect'); opts.forEach(o => { if(o.innerText === q.o[q.a]) o.classList.add('correct'); }); }
-    document.getElementById('q-expl').innerText = q.e;
-    document.getElementById('q-feedback').classList.remove('hidden');
-    document.getElementById('score').innerText = state.xp;
-}
-
-function nextQ() {
-    state.qIdx++;
-    if(state.qIdx < state.qSet.length) loadQ();
-    else { document.getElementById('quiz-menu').classList.remove('hidden'); document.getElementById('quiz-engine').classList.add('hidden'); }
-}
-
-// FLASHCARDS
-function loadFC() {
-    document.getElementById('fc-f').innerText = flash[state.fcIdx].t;
-    document.getElementById('fc-b').innerText = flash[state.fcIdx].d;
-    document.getElementById('fc-inner').classList.remove('flipped');
-}
-function nextFC() { state.fcIdx = (state.fcIdx + 1) % flash.length; loadFC(); }
-
-// CHRONO
-function initChrono() {
-    const all = [...bank.recrutement, ...bank.admin, ...bank.deplacements];
-    state.qSet = shuffle(all); state.qIdx = 0;
-    document.getElementById('chrono-start-btn').classList.add('hidden');
-    document.getElementById('chrono-play').classList.remove('hidden');
-    let timeLeft = 120;
-    state.timer = setInterval(() => {
-        timeLeft--;
-        let m = Math.floor(timeLeft / 60); let s = timeLeft % 60;
-        document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        if(timeLeft <= 0) { clearInterval(state.timer); alert("Fin de session."); location.reload(); }
-    }, 1000);
-    loadChronoQ();
-}
-
-function loadChronoQ() {
-    const q = state.qSet[state.qIdx];
-    document.getElementById('chrono-q').innerText = q.q;
-    const box = document.getElementById('chrono-opts');
-    box.innerHTML = "";
-    q.o.forEach((o, i) => {
-        const div = document.createElement('div'); div.className = 'option'; div.innerText = o;
-        div.onclick = () => { if(i === q.a) state.xp += 50; state.qIdx++; loadChronoQ(); };
-        box.appendChild(div);
-    });
-}
-
-// DAILY
-function loadDaily() {
-    const d = shuffle([...daily])[0];
-    document.getElementById('daily-title').innerText = d.t;
-    document.getElementById('daily-desc').innerText = d.d;
-    const area = document.getElementById('daily-action'); area.innerHTML = "";
-    if(d.type === 'calc') {
-        area.innerHTML = `<input type="number" id="d-in" step="0.01" style="width:100%; padding:10px;"><button class="btn-pgi" onclick="checkDaily('${d.ans}')">Valider</button>`;
-    } else {
-        d.o.forEach((o, i) => { area.innerHTML += `<div class="option" onclick="checkDaily(${i}, ${d.ans})">${o}</div>`; });
-    }
-}
-
-function checkDaily(val, target) {
-    let win = (val == target);
-    if(win) { alert("Analyse correcte. +500 XP"); state.xp += 500; document.getElementById('score').innerText = state.xp; showSec('dash'); }
-    else alert("Erreur d'analyse. Réessayez.");
+    if(id === 'quiz') renderQuizCats();
+    if(window.innerWidth <= 768) toggleMenu();
 }
 
 function renderFiches() {
-    document.getElementById('fiches-render').innerHTML = fiches.map(f => `<div class="widget"><h2 class="widget-h2">${f.t}</h2><p>${f.c}</p></div>`).join('');
+    document.getElementById('fiches-render').innerHTML = db.fiches.map(f => `
+        <div class="widget"><h3>${f.t}</h3><p style="margin-top:10px; line-height:1.6;">${f.c}</p></div>
+    `).join('');
+}
+
+function loadNextFC() {
+    const item = db.lexique[state.fcIdx];
+    document.getElementById('fc-f').innerText = item.t;
+    document.getElementById('fc-b').innerText = item.d;
+    document.getElementById('fc-inner').classList.remove('flipped');
+    state.fcIdx = (state.fcIdx + 1) % db.lexique.length;
+}
+
+function renderQuizCats() {
+    document.getElementById('q-cats').innerHTML = Object.keys(db.quiz).map(k => `
+        <div class="option" onclick="startQuiz('${k}')">Module : ${k.toUpperCase()}</div>
+    `).join('');
+}
+
+function startQuiz(cat) {
+    state.qSet = shuffle([...db.quiz[cat]]);
+    state.qIdx = 0;
+    document.getElementById('q-menu').classList.add('hidden');
+    document.getElementById('q-play').classList.remove('hidden');
+    loadQuizQ();
+}
+
+function loadQuizQ() {
+    const q = state.qSet[state.qIdx];
+    document.getElementById('q-text').innerText = q.q;
+    document.getElementById('q-feedback').classList.add('hidden');
+    const box = document.getElementById('q-options'); box.innerHTML = "";
+    // Shuffle options logic
+    const indices = shuffle([...Array(q.o.length).keys()]);
+    indices.forEach(i => {
+        const d = document.createElement('div'); d.className = 'option'; d.innerText = q.o[i];
+        d.onclick = () => checkQuiz(i, d); box.appendChild(d);
+    });
+}
+
+function checkQuiz(idx, el) {
+    const q = state.qSet[state.qIdx];
+    const items = document.querySelectorAll('#q-options .option');
+    items.forEach(it => it.style.pointerEvents = 'none');
+    if(idx === q.a) { 
+        el.classList.add('correct'); state.xp += 100;
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    } else { 
+        el.classList.add('incorrect'); 
+        items.forEach(it => { if(it.innerText === q.o[q.a]) it.classList.add('correct'); });
+    }
+    document.getElementById('q-expl').innerHTML = "<b>Analyse :</b> " + q.e;
+    document.getElementById('q-feedback').classList.remove('hidden');
+    document.getElementById('xp').innerText = state.xp;
+}
+
+function proceedQuiz() {
+    state.qIdx++;
+    if(state.qIdx < state.qSet.length) loadQuizQ();
+    else { document.getElementById('q-menu').classList.remove('hidden'); document.getElementById('q-play').classList.add('hidden'); }
+}
+
+function loadRandomDaily() {
+    const d = shuffle([...db.daily])[0];
+    document.getElementById('d-title').innerText = "DÉFI : " + d.t;
+    document.getElementById('d-desc').innerText = d.d;
+    const area = document.getElementById('d-area'); area.innerHTML = "";
+    if(d.type === 'calc') {
+        area.innerHTML = `<input type="number" id="di" step="0.01" style="width:100%; padding:15px; margin-bottom:10px;"><button class="btn-pgi" onclick="validateDaily('${d.ans}')">Valider</button>`;
+    } else {
+        d.o.forEach((o, i) => area.innerHTML += `<div class="option" onclick="validateDaily(${i}, ${d.a})">${o}</div>`);
+    }
+}
+
+function validateDaily(val, target) {
+    const win = (val == target);
+    if(win) { 
+        alert("EXCELLENT ! Médaille RH débloquée."); state.xp += 500; 
+        document.getElementById('xp').innerText = state.xp; nav('dash');
+    } else alert("ERREUR ADMINISTRATIVE. Dossier rejeté.");
+}
+
+function startChrono() {
+    const all = Object.values(db.quiz).flat();
+    state.qSet = shuffle(all); state.qIdx = 0;
+    document.getElementById('c-start').classList.add('hidden');
+    document.getElementById('c-area').classList.remove('hidden');
+    let t = 120;
+    state.timer = setInterval(() => {
+        t--;
+        let m = Math.floor(t/60), s = t%60;
+        document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        if(t <= 0) { clearInterval(state.timer); alert("SESSION TERMINÉE."); location.reload(); }
+    }, 1000);
+    loadCQ();
+}
+
+function loadCQ() {
+    const q = state.qSet[state.qIdx];
+    document.getElementById('c-q').innerText = q.q;
+    const box = document.getElementById('c-opts'); box.innerHTML = "";
+    q.o.forEach((o, i) => {
+        const d = document.createElement('div'); d.className = 'option'; d.innerText = o;
+        d.onclick = () => { if(i === q.a) state.xp += 50; state.qIdx++; loadCQ(); };
+        box.appendChild(d);
+    });
 }
 </script>
 </body>
