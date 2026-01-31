@@ -3,237 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGORA Master - Révisions Gamifiées</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>AGORA MASTER - CHALLENGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #1a1a2e; --card-bg: #16213e; --accent: #6366f1;
-            --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
-            --text: #ffffff;
+            --neon-blue: #00f2ff; --neon-purple: #bc13fe; --neon-pink: #ff00bd;
+            --dark-bg: #050505; --card-bg: #111111; --text: #ffffff;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
+        body { background: var(--dark-bg); color: var(--text); overflow-x: hidden; }
 
-        /* Header & Stats */
+        /* HEADER CYBERPUNK */
         .header {
-            background: rgba(255,255,255,0.05); padding: 15px 30px;
-            display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 40px; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--neon-blue);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
-        .logo { font-weight: 800; font-size: 1.5rem; }
-        .stats { display: flex; gap: 15px; align-items: center; }
-        .stat-box { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .stats { display: flex; gap: 20px; }
+        .stat-item { background: #222; padding: 5px 15px; border-radius: 5px; border: 1px solid var(--neon-purple); font-weight: bold; }
 
-        /* Navigation Onglets (Style Image) */
-        .nav-container {
-            display: flex; justify-content: center; padding: 20px; gap: 10px; flex-wrap: wrap;
-            background: rgba(0,0,0,0.2);
+        /* NAVIGATION DYNAMIQUE */
+        .nav-tabs {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 20px;
+            background: linear-gradient(to bottom, #111, #000);
         }
-        .nav-btn {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer;
-            transition: 0.3s; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
+        .tab-btn {
+            background: transparent; border: 2px solid #333; color: #fff; padding: 12px 20px;
+            border-radius: 5px; cursor: pointer; font-weight: 700; transition: 0.3s; text-transform: uppercase;
         }
-        .nav-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.2); }
-        .nav-btn.active { background: var(--accent); border-color: transparent; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
-        
-        /* Couleurs spécifiques onglets */
-        .btn-express { background: #ff4d94 !important; }
-        .btn-chrono { background: #ffcc00 !important; color: #000 !important; }
+        .tab-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .tab-btn.active { background: var(--neon-blue); color: #000; border-color: var(--neon-blue); box-shadow: 0 0 20px var(--neon-blue); }
+        .btn-daily { border-color: var(--neon-pink); color: var(--neon-pink); animation: pulse 2s infinite; }
 
-        /* Main Content */
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* Cards Accueil */
-        .welcome-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
-        .welcome-card {
-            background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center;
-            border: 2px solid transparent; transition: 0.3s; cursor: pointer;
+        /* CONTENU */
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px; }
+        .section { display: none; }
+        .section.active { display: block; animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* GRILLE ACCUEIL */
+        .grid-home { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .hero-card {
+            background: var(--card-bg); border: 1px solid #222; padding: 40px; border-radius: 15px;
+            text-align: center; position: relative; overflow: hidden; transition: 0.4s;
         }
-        .welcome-card:hover { border-color: var(--accent); transform: scale(1.05); }
+        .hero-card:hover { border-color: var(--neon-blue); transform: translateY(-10px); }
+        .hero-card h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; }
 
-        /* Quiz UI */
-        .option { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; margin: 10px 0; cursor: pointer; }
-        .correct { background: var(--g-green) !important; }
-        .incorrect { background: var(--g-red) !important; }
-        
-        /* Flashcards */
-        .flashcard {
-            width: 100%; max-width: 400px; height: 250px; margin: 20px auto;
-            background: var(--accent); border-radius: 20px; display: flex; align-items: center;
-            justify-content: center; text-align: center; padding: 20px; cursor: pointer; font-weight: 700;
+        /* QUIZ ENGINE STYLE */
+        .option {
+            background: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 8px;
+            margin: 15px 0; cursor: pointer; font-size: 1.2rem; transition: 0.2s;
+        }
+        .option:hover { border-color: var(--neon-blue); background: #222; }
+        .correct { border-color: #00ff00 !important; background: rgba(0,255,0,0.1) !important; box-shadow: 0 0 15px #00ff00; }
+        .incorrect { border-color: #ff0000 !important; background: rgba(255,0,0,0.1) !important; box-shadow: 0 0 15px #ff0000; }
+
+        .feedback-panel {
+            background: #111; border-top: 4px solid var(--neon-blue); padding: 20px; margin-top: 30px;
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">📑 AGORA Master</div>
-        <div class="stats">
-            <div class="stat-box">⭐ <span id="xp">0</span> XP</div>
-            <div class="stat-box">🔥 <span id="streak">0</span></div>
+<header class="header">
+    <div class="logo">AGORA MASTER</div>
+    <div class="stats">
+        <div class="stat-item">XP: <span id="xp-val">0</span></div>
+        <div class="stat-item">STREAK: 🔥 <span id="streak-val">0</span></div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('accueil')">Accueil</button>
+    <button class="tab-btn btn-daily" onclick="showTab('daily')">🎯 Défi du Jour</button>
+    <button class="tab-btn" onclick="showTab('fiches')">Fiches</button>
+    <button class="tab-btn" onclick="showTab('flashcards')">Flashcards</button>
+    <button class="tab-btn" onclick="showTab('quiz')">Quiz</button>
+    <button class="tab-btn" onclick="showTab('chrono')">Défi Chrono</button>
+</nav>
+
+<div class="container">
+    <section id="accueil" class="section active">
+        <h1 style="font-family:'Orbitron'; color:var(--neon-blue); margin-bottom:30px; text-align:center;">VÉROUILLER LES COMPÉTENCES RH...</h1>
+        <div class="grid-home">
+            <div class="hero-card" onclick="showTab('daily')" style="border-color:var(--neon-pink)">
+                <div style="font-size:3rem;">⚡</div>
+                <h3>DÉFI DU JOUR</h3>
+                <p>Scénario : "Le Salaire de Gloria"</p>
+            </div>
+            <div class="hero-card" onclick="showTab('quiz')">
+                <div style="font-size:3rem;">❓</div>
+                <h3>QUIZ</h3>
+                <p>120 questions pour le BAC PRO</p>
+            </div>
+            <div class="hero-card" onclick="showTab('chrono')">
+                <div style="font-size:3rem;">⏱️</div>
+                <h3>CHRONO</h3>
+                <p>Élite : 10 questions / 2 min</p>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <nav class="nav-container">
-        <button class="nav-btn active" onclick="showTab('accueil')">🏠 Accueil</button>
-        <button class="nav-btn btn-express" onclick="showTab('express')">⚡ 5 min Express</button>
-        <button class="nav-btn" onclick="showTab('fiches')">📖 Fiches</button>
-        <button class="nav-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
-        <button class="nav-btn" onclick="showTab('quiz')">❓ Quiz</button>
-        <button class="nav-btn btn-chrono" onclick="showTab('chrono')">⏱️ Défi Chrono</button>
-    </nav>
-
-    <main class="container">
-        <section id="accueil" class="section active">
-            <h1 style="text-align:center; margin-top:20px;">Prêt(e) à devenir un Master AGORA ? 🚀</h1>
-            <p style="text-align:center; opacity:0.7;">Le Pôle 3 Gestion des RH n'aura plus de secrets pour toi !</p>
+    <section id="daily" class="section">
+        <div class="hero-card" style="border-color:var(--neon-pink); text-align:left;">
+            <h2 style="color:var(--neon-pink); font-family:'Orbitron';">MISSION : L'ASSISTANT DE L'ANNÉE</h2>
+            <p style="margin: 15px 0;">Layla Bamara arrive chez Wink Digital. Vous devez gérer son dossier sans erreur ! [cite: 616]</p>
             
-            <div class="welcome-grid">
-                <div class="welcome-card" onclick="showTab('express')">
-                    <div style="font-size:40px;">⚡</div>
-                    <h3>5 min Express</h3>
-                    <p>Révision ultra-rapide</p>
-                </div>
-                <div class="welcome-card" onclick="showTab('flashcards')">
-                    <div style="font-size:40px;">🃏</div>
-                    <h3>Flashcards</h3>
-                    <p>Définitions clés</p>
-                </div>
-                <div class="welcome-card" onclick="showTab('quiz')">
-                    <div style="font-size:40px;">❓</div>
-                    <h3>Quiz</h3>
-                    <p>120+ questions</p>
-                </div>
-                <div class="welcome-card" onclick="showTab('chrono')">
-                    <div style="font-size:40px;">⏱️</div>
-                    <h3>Défi Chrono</h3>
-                    <p>10 questions, 2 min !</p>
-                </div>
+            <div id="daily-step-1">
+                <p><strong>Étape 1 : Le Salaire Brut [cite: 635, 636]</strong></p>
+                <p>Données : Salaire de base 2200 € + Prime 150 €. [cite: 636]</p>
+                <input type="number" id="daily-calc" placeholder="Saisir le brut total..." style="padding:10px; width:100%; background:#000; border:1px solid var(--neon-pink); color:white; margin-top:10px;">
+                <button class="tab-btn active" style="margin-top:10px;" onclick="checkDailyCalc()">Valider le calcul</button>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="flashcards" class="section">
-            <h2 style="text-align:center;">🃏 Flashcards : Définitions</h2>
-            <div class="flashcard" id="card" onclick="flipCard()">Clique pour voir la définition</div>
-            <div style="text-align:center; margin-top:20px;">
-                <button class="nav-btn" onclick="nextCard()" style="margin:auto">Suivant ⮕</button>
-            </div>
-        </section>
+    <section id="fiches" class="section">
+        <h2 style="color:var(--neon-blue); margin-bottom:20px;">BIBLIOTHÈQUE DE DONNÉES [cite: 76, 77]</h2>
+        <div class="hero-card" style="text-align:left; margin-bottom:15px;">
+            <h3 style="color:var(--neon-blue)">Recrutement [cite: 78]</h3>
+            <ul>
+                <li><strong>Fiche de poste</strong> : Missions et tâches. [cite: 82]</li>
+                <li><strong>Profil de poste</strong> : Candidat idéal (diplômes). [cite: 83]</li>
+                <li><strong>DPAE</strong> : 8 jours avant l'embauche. [cite: 91]</li>
+            </ul>
+        </div>
+    </section>
 
-        <section id="quiz" class="section">
-            <div id="q-area">
-                <h2 id="q-text">Chargement du quiz...</h2>
-                <div id="options-list"></div>
-                <div id="fb" class="hidden" style="margin-top:20px; padding:15px; background:rgba(255,255,255,0.1); border-radius:10px;">
-                    <p id="fb-text"></p>
-                    <button class="nav-btn active" style="margin-top:10px; width:100%; justify-content:center;" onclick="nextQ()">Question suivante</button>
-                </div>
-            </div>
-        </section>
-        
-        <section id="fiches" class="section">
-            <h2>📖 Fiches de Révision (Pôle 3)</h2>
-            <div style="background:var(--card-bg); padding:20px; border-radius:15px; margin-top:20px;">
-                <h3 style="color:var(--g-blue)">1. Le Recrutement [cite: 78]</h3>
-                <ul style="margin-left:20px; margin-top:10px;">
-                    <li><b>Fiche de poste :</b> Décrit les missions et tâches. [cite: 82]</li>
-                    <li><b>Profil de poste :</b> Décrit le candidat idéal (diplômes, savoir-être). [cite: 83]</li>
-                    <li><b>DPAE :</b> Déclaration obligatoire 8 jours avant l'embauche. [cite: 91]</li>
-                </ul>
-            </div>
-        </section>
-    </main>
+    <section id="quiz" class="section">
+        <h2 id="q-text">Prêt pour le combat ?</h2>
+        <div id="options-list"></div>
+        <div id="feedback-panel" class="hidden feedback-panel">
+            <p id="fb-msg"></p>
+            <button class="tab-btn active" onclick="nextQ()">Question Suivante</button>
+        </div>
+    </section>
+</div>
 
-    <script>
-        // --- DONNÉES DU GUIDE ---
-        const definitions = [
-            { t: "Onboarding", d: "Processus d'accueil pour s'assurer de l'intégration des nouveaux collaborateurs (embarquement). [cite: 27]" },
-            { t: "DPAE", d: "Déclaration Préalable à l'Embauche. Formalité obligatoire avant toute embauche. [cite: 123]" },
-            { t: "Avenant", d: "Acte écrit modifiant ou complétant le contrat de travail initial. [cite: 122]" },
-            { t: "Ordre de mission", d: "Document autorisant un déplacement et garantissant la protection sociale. [cite: 125]" }
-        ];
+<script>
+    const questions = [
+        { q: "Quelle est la sanction pour non-tenue du registre du personnel ?", o: ["135 €", "Jusqu'à 750 € par salarié concerné", "Fermeture administrative"], a: 1, e: "L'employeur risque 750€ par salarié manquant ou incomplet. [cite: 48, 49]" },
+        { q: "Quelle clause protège les données sensibles après le départ ?", o: ["Clause de mobilité", "Clause de confidentialité", "Clause d'essai"], a: 1, e: "La clause de confidentialité protège les secrets de fabrication et fichiers clients. [cite: 43, 44, 100]" }
+    ];
 
-        const questions = [
-            { q: "Quelle est la différence fondamentale entre le recrutement interne et externe ? [cite: 5]", o: ["L'interne est plus cher", "L'interne cible le personnel actuel, l'externe le marché du travail [cite: 6]", "L'interne n'a pas d'entretien"], a: 1, e: "Le recrutement externe s'adresse à des personnes étrangères à l'entreprise. [cite: 7]" },
-            { q: "Sanction pour non-tenue du registre du personnel ? [cite: 47]", o: ["135 €", "Jusqu'à 750 € par salarié concerné [cite: 48]", "Fermeture administrative"], a: 1, e: "L'employeur risque 750€ d'amende par salarié manquant ou incomplet. [cite: 49]" },
-            { q: "Calcul : Taux 18,59€ x 151,67h. Salaire de base ? [cite: 59, 60]", o: ["2819,54€ ", "2500,00€", "1859,00€"], a: 0, e: "Calcul : 18,59 x 151,67 = 2819,54€. " }
-        ];
+    let state = { xp: 0, currentQ: 0 };
 
-        // --- LOGIQUE ---
-        let state = { xp: 0, currentQ: 0, currentCard: 0, isFlipped: false };
+    function showTab(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        // Marquer le bouton actif
+        event.currentTarget.classList.add('active');
+        if(id === 'quiz') loadQ();
+    }
 
-        function showTab(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-            if(id === 'quiz') startQuiz();
-            if(id === 'flashcards') showCard();
+    function loadQ() {
+        const q = questions[state.currentQ];
+        document.getElementById('q-text').innerText = q.q;
+        const list = document.getElementById('options-list');
+        list.innerHTML = "";
+        q.o.forEach((opt, i) => {
+            const d = document.createElement('div');
+            d.className = 'option';
+            d.innerText = opt;
+            d.onclick = () => checkQ(i, d);
+            list.appendChild(d);
+        });
+        document.getElementById('feedback-panel').classList.add('hidden');
+    }
+
+    function checkQ(idx, el) {
+        const q = questions[state.currentQ];
+        if(idx === q.a) {
+            el.classList.add('correct');
+            state.xp += 100;
+            document.getElementById('xp-val').innerText = state.xp;
+        } else {
+            el.classList.add('incorrect');
+            document.querySelectorAll('.option')[q.a].classList.add('correct');
         }
+        document.getElementById('fb-msg').innerText = q.e;
+        document.getElementById('feedback-panel').classList.remove('hidden');
+    }
 
-        function showCard() {
-            const card = document.getElementById('card');
-            card.innerText = definitions[state.currentCard].t;
-            state.isFlipped = false;
+    function nextQ() {
+        state.currentQ = (state.currentQ + 1) % questions.length;
+        loadQ();
+    }
+
+    function checkDailyCalc() {
+        const val = document.getElementById('daily-calc').value;
+        if(val == 2350) { // Calcul : 2200 + 150 = 2350 [cite: 638]
+            alert("✅ EXCELLENT ! Brut validé. XP +500. ");
+            state.xp += 500;
+            document.getElementById('xp-val').innerText = state.xp;
+        } else {
+            alert("❌ ERREUR DE CALCUL. Relisez la fiche paie ! [cite: 621]");
         }
-
-        function flipCard() {
-            const card = document.getElementById('card');
-            state.isFlipped = !state.isFlipped;
-            card.innerText = state.isFlipped ? definitions[state.currentCard].d : definitions[state.currentCard].t;
-        }
-
-        function nextCard() {
-            state.currentCard = (state.currentCard + 1) % definitions.length;
-            showCard();
-        }
-
-        function startQuiz() {
-            state.currentQ = 0;
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const q = questions[state.currentQ];
-            document.getElementById('q-text').innerText = q.q;
-            document.getElementById('fb').classList.add('hidden');
-            const list = document.getElementById('options-list');
-            list.innerHTML = "";
-            q.o.forEach((opt, i) => {
-                const btn = document.createElement('div');
-                btn.className = 'option';
-                btn.innerText = opt;
-                btn.onclick = () => checkAns(i, btn);
-                list.appendChild(btn);
-            });
-        }
-
-        function checkAns(idx, btn) {
-            const q = questions[state.currentQ];
-            const all = document.querySelectorAll('.option');
-            all.forEach(o => o.style.pointerEvents = 'none');
-
-            if(idx === q.a) {
-                btn.classList.add('correct');
-                state.xp += 50;
-                document.getElementById('xp').innerText = state.xp;
-            } else {
-                btn.classList.add('incorrect');
-                all[q.a].classList.add('correct');
-            }
-            document.getElementById('fb-text').innerText = q.e;
-            document.getElementById('fb').classList.remove('hidden');
-        }
-
-        function nextQ() {
-            state.currentQ++;
-            if(state.currentQ < questions.length) loadQuestion();
-            else alert("Bravo ! Quiz terminé.");
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
