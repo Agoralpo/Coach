@@ -3,200 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGORA Master - Le Jeu RH</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>AGORA Master - Pro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
-            --gray-bg: #f8f9fa; --text: #202124; --border: #dadce0;
+            --accent: #6366f1; --accent-glow: rgba(99, 102, 241, 0.4);
+            --bg: #0f172a; --card-bg: rgba(30, 41, 59, 0.7);
+            --success: #22c55e; --error: #ef4444; --text: #f8fafc;
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { 
-            font-family: 'Roboto', sans-serif; margin: 0; background-color: #fff; color: var(--text);
-            line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh;
+            background: radial-gradient(circle at top right, #1e1b4b, var(--bg)); 
+            color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden;
         }
-        header { 
-            padding: 15px 20px; border-bottom: 1px solid var(--border); 
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; background: #fff; z-index: 1000;
-        }
-        .logo { font-size: 20px; font-weight: 500; }
-        .logo span:nth-child(1) { color: var(--g-blue); } .logo span:nth-child(2) { color: var(--g-red); }
-        .logo span:nth-child(3) { color: var(--g-yellow); } .logo span:nth-child(4) { color: var(--g-blue); }
-        .logo span:nth-child(5) { color: var(--g-green); } .logo span:nth-child(6) { color: var(--g-red); }
-        
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; width: 100%; }
-        
-        /* Dashboard Pix Style */
-        .skill-card {
-            border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 15px;
-            cursor: pointer; transition: all 0.2s; display: flex; align-items: center;
-        }
-        .skill-card:active { transform: scale(0.98); background-color: var(--gray-bg); }
-        .skill-icon { width: 45px; height: 45px; border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; }
-        .skill-info { flex-grow: 1; }
-        .skill-title { font-weight: 500; font-size: 16px; margin: 0; }
-        .skill-progress { height: 6px; background: #eee; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .progress-bar { height: 100%; width: 0%; transition: width 0.5s; }
 
-        /* Quiz UI */
+        /* Nav & Stats */
+        header {
+            padding: 20px; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(10px); sticky; top: 0; z-index: 100;
+        }
+        .xp-badge {
+            background: var(--accent); padding: 8px 16px; border-radius: 20px;
+            font-weight: 800; box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Menu Principal */
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .mode-selector { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;
+        }
+        .mode-btn {
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px; border-radius: 16px; color: white; cursor: pointer;
+            text-align: center; transition: 0.3s;
+        }
+        .mode-btn:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .mode-btn.active { background: var(--accent); }
+
+        /* Grille Pix */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .card {
+            background: var(--card-bg); border-radius: 20px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
+        }
+        .progress-ring {
+            position: absolute; top: 15px; right: 15px; font-size: 12px;
+            background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 10px;
+        }
+
+        /* Interface Quiz */
         .hidden { display: none; }
-        .question-box { animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
         .option {
-            border: 1px solid var(--border); border-radius: 24px; padding: 15px 20px; margin: 10px 0;
-            cursor: pointer; transition: 0.2s; font-size: 15px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px; border-radius: 12px; margin: 12px 0; cursor: pointer; transition: 0.2s;
         }
-        .option:active { background-color: var(--gray-bg); }
-        .correct { background-color: #e6f4ea !important; border-color: var(--g-green) !important; color: #137333; }
-        .incorrect { background-color: #fce8e6 !important; border-color: var(--g-red) !important; color: #c5221f; }
-        
-        .feedback { 
-            margin-top: 20px; padding: 15px; border-radius: 8px; background: var(--gray-bg); 
-            border-left: 4px solid var(--g-blue); font-size: 14px;
+        .option:hover { background: rgba(255,255,255,0.08); }
+        .correct { background: var(--success) !important; border-color: transparent !important; }
+        .incorrect { background: var(--error) !important; border-color: transparent !important; }
+
+        .feedback-box {
+            margin-top: 20px; padding: 20px; border-radius: 12px;
+            background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--accent);
         }
-        
-        .btn {
-            background: var(--g-blue); color: white; border: none; padding: 12px 24px;
-            border-radius: 4px; font-weight: 500; width: 100%; margin-top: 15px; cursor: pointer;
+        .btn-action {
+            background: var(--accent); color: white; border: none; padding: 15px 30px;
+            border-radius: 12px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 20px;
         }
 
-        .success-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.9); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 2000; text-align: center;
+        /* Fiches Révision */
+        .fiche { background: var(--card-bg); padding: 30px; border-radius: 24px; line-height: 1.6; }
+        .fiche h2 { color: var(--accent); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        
+        /* Animation Réussite */
+        @keyframes successPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo"><span>A</span><span>G</span><span>O</span><span>R</span><span>A</span> <span>Master</span></div>
-    <div id="user-xp" style="font-weight: 500; color: var(--g-blue);">0 XP</div>
+    <div style="font-size: 24px; font-weight: 800;">AGORA<span style="color:var(--accent)">MASTER</span></div>
+    <div class="xp-badge" id="global-xp">0 XP</div>
 </header>
 
-<main class="container" id="main-view">
-    <h2 style="font-weight: 400; margin-bottom: 25px;">Mes Compétences AGORA</h2>
-    
-    <div id="skills-list">
-        </div>
-</main>
-
-<main class="container hidden" id="quiz-view">
-    <div id="quiz-content">
-        <div id="progress-text" style="font-size: 12px; color: #5f6368; margin-bottom: 10px;">Question 1/3</div>
-        <h3 id="q-text" style="font-weight: 400; margin-top: 0;"></h3>
-        <div id="options-container"></div>
-        <div id="q-feedback" class="hidden feedback"></div>
-        <button id="next-btn" class="btn hidden" onclick="handleNext()">Continuer</button>
+<div class="container">
+    <div class="mode-selector">
+        <div class="mode-btn active" id="btn-train" onclick="switchMode('train')">🎮 Entraînement</div>
+        <div class="mode-btn" id="btn-rev" onclick="switchMode('rev')">📖 Révisions</div>
     </div>
-</main>
+
+    <div id="view-train">
+        <div class="grid" id="themes-grid"></div>
+        <h3 style="margin-top:40px;">🕵️ Défis Spéciaux</h3>
+        <div class="grid">
+            <div class="card" onclick="startSpecial('detective')">
+                <h4>Mode Détective</h4>
+                <p style="font-size:14px; opacity:0.7;">Trouve les erreurs dans les documents RH[cite: 275].</p>
+            </div>
+            <div class="card" onclick="startSpecial('manager')">
+                <h4>Mode Manager</h4>
+                <p style="font-size:14px; opacity:0.7;">Prends les bonnes décisions administratives[cite: 302].</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-rev" class="hidden">
+        <div class="grid" id="fiches-list"></div>
+    </div>
+
+    <div id="view-quiz" class="hidden">
+        <button onclick="exitQuiz()" style="background:none; border:none; color:white; cursor:pointer; margin-bottom:20px;">← Quitter</button>
+        <div id="quiz-content">
+            <div id="q-meta" style="color:var(--accent); font-weight:600; margin-bottom:10px;"></div>
+            <h2 id="q-text" style="margin-top:0;"></h2>
+            <div id="options-box"></div>
+            <div id="feedback-area" class="hidden">
+                <div class="feedback-box" id="fb-text"></div>
+                <button class="btn-action" onclick="handleNext()">Question suivante</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-fiche-detail" class="hidden">
+        <button onclick="switchMode('rev')" style="background:none; border:none; color:white; cursor:pointer; margin-bottom:20px;">← Retour</button>
+        <div id="fiche-content" class="fiche"></div>
+    </div>
+</div>
 
 <script>
-    const themes = [
-        { id: 'A', title: 'Recrutement', icon: '👤', color: '#4285F4', questions: [
-            { q: "Différence entre recrutement interne et externe ?", options: ["L'interne est plus cher [cite: 6]", "L'externe cible des personnes hors personnel [cite: 7]", "L'interne n'a pas d'entretien [cite: 8]"], ans: 1, expl: "Le recrutement externe s'adresse à des personnes ne faisant pas partie du personnel de l'entreprise. [cite: 7, 9]" },
-            { q: "Qu'est-ce qu'une 'Fiche de poste' ?", options: ["Le CV du candidat [cite: 11]", "Le portrait du candidat idéal [cite: 12]", "Description des missions et place organigramme [cite: 13]"], ans: 2, expl: "Elle décrit les missions, les tâches et la place dans l'organigramme. [cite: 13, 14]" },
-            { q: "Formalité 8 jours avant l'embauche ?", options: ["Signature contrat [cite: 16]", "Visite médicale [cite: 17]", "La DPAE [cite: 18]"], ans: 2, expl: "La Déclaration Préalable à l'Embauche (DPAE) est obligatoire. [cite: 18, 19]" }
-        ]},
-        { id: 'B', title: 'Intégration', icon: '🤝', color: '#EA4335', questions: [
-            { q: "Qu'est-ce que l'Onboarding ?", options: ["Un licenciement", "Un processus d'accueil des nouveaux [cite: 30]", "Une réunion de direction"], ans: 1, expl: "C'est l'embarquement : l'accueil pour bien intégrer les nouveaux. [cite: 29, 30]" },
-            { q: "Contenu du livret d'accueil ?", options: ["Bulletins de salaire [cite: 33]", "Organigramme et règlement intérieur [cite: 34]", "Codes bancaires [cite: 35]"], ans: 1, expl: "Il contient l'organigramme, le règlement et les infos pratiques. [cite: 34, 36]" }
-        ]},
-        { id: 'C', title: 'Gestion Administrative', icon: '📂', color: '#FBBC05', questions: [
-            { q: "Amende pour non-tenue du registre du personnel ?", options: ["135 € [cite: 59]", "750 € par salarié [cite: 60]", "Fermeture définitive [cite: 61]"], ans: 1, expl: "L'employeur risque 750 € d'amende par salarié concerné. [cite: 60, 62]" },
-            { q: "Quand un avenant est-il OBLIGATOIRE ?", options: ["Changement de déco [cite: 66]", "Changement de banque [cite: 67]", "Modif élément essentiel (salaire, lieu) [cite: 65]"], ans: 2, expl: "Obligatoire pour modifier la rémunération, la durée, le lieu ou le poste. [cite: 65, 67]" }
-        ]},
-        { id: 'D', title: 'Déplacements', icon: '✈️', color: '#34A853', questions: [
-            { q: "Document couvrant le salarié en cas d'accident ?", options: ["Billet de train [cite: 74]", "Ordre de mission [cite: 75]", "Devis hôtel [cite: 76]"], ans: 1, expl: "L'ordre de mission est le document obligatoire pour la couverture. [cite: 75, 77]" },
-            { q: "Les 3 types de contraintes ?", options: ["Temporelles, géographiques, financières [cite: 79]", "Météo et gastronomie [cite: 80]", "Informatique et politique [cite: 81]"], ans: 0, expl: "On prend en compte le temps, le lieu et le budget. [cite: 79, 81]" }
-        ]}
-    ];
+    // Données consolidées depuis le Guide RH [cite: 3, 24, 40, 63, 76]
+    const db = {
+        themes: [
+            { id: 'T1', title: 'Recrutement', icon: '👤', questions: [
+                { q: "Différence fondamentale entre recrutement interne et externe ?", options: ["L'interne est plus cher", "L'interne cible le personnel actuel, l'externe le marché du travail", "L'externe est réservé aux cadres"], ans: 1, expl: "Le recrutement interne s'adresse aux salariés déjà présents[cite: 6, 167]." },
+                { q: "Qu'est-ce qu'une fiche de poste ?", options: ["Le CV du candidat", "Description des missions, tâches et place dans l'organigramme", "Uniquement les diplômes"], ans: 1, expl: "Elle décrit les missions et les conditions de travail[cite: 9, 171]." },
+                { q: "Quand faire la DPAE ?", options: ["Après la période d'essai", "Dans les 8 jours précédant l'embauche", "Le jour du premier salaire"], ans: 1, expl: "Formalité obligatoire à faire auprès de l'URSSAF avant l'embauche[cite: 91, 185]." }
+            ]},
+            { id: 'T3', title: 'Gestion Administrative', icon: '📂', questions: [
+                { q: "Sanction pour non-tenue du registre du personnel ?", options: ["135 €", "750 € par salarié concerné", "Aucune sanction"], ans: 1, expl: "L'employeur encourt jusqu'à 750€ d'amende par salarié[cite: 48, 105]." },
+                { q: "Quand l'avenant au contrat est-il obligatoire ?", options: ["Changement de numéro de mobile", "Modification d'un élément essentiel (salaire, lieu, poste)", "Changement de banque"], ans: 1, expl: "Requis pour toute modif de rémunération, durée ou lieu[cite: 52, 109]." }
+            ]}
+        ],
+        fiches: [
+            { id: 'F1', title: 'Recrutement & Intégration', content: `<h2>Préparer le recrutement</h2><ul><li><b>Fiche de poste :</b> Missions, tâches [cite: 82].</li><li><b>Profil de poste :</b> Diplômes, savoir-être [cite: 83].</li></ul><h2>DPAE</h2>Obligatoire dans les 8 jours avant l'embauche[cite: 91].` },
+            { id: 'F2', title: 'Contrat & Registre', content: `<h2>Le Registre du Personnel</h2>Obligatoire dès le 1er salarié[cite: 102]. Conservation : 5 ans après le départ[cite: 106, 375].` }
+        ],
+        special: {
+            detective: [
+                { q: "SCÉNARIO : Dans le Registre du Personnel, Luis (entré le 10) est inscrit après Jean (entré le 12). Quelle est l'erreur ?", options: ["Aucune erreur", "L'ordre chronologique d'embauche n'est pas respecté", "Le nom est mal écrit"], ans: 1, expl: "L'enregistrement doit se faire par ordre chronologique d'embauche[cite: 403, 405]." }
+            ],
+            manager: [
+                { q: "SITUATION : Gloria va avoir une augmentation. Que faites-vous ?", options: ["Simple SMS", "Changement uniquement sur le bulletin de paie", "Rédaction d'un avenant au contrat"], ans: 2, expl: "C'est une modification d'un élément essentiel du contrat[cite: 307, 308]." }
+            ]
+        }
+    };
 
-    let state = JSON.parse(localStorage.getItem('agoraMasterData')) || { xp: 0, progress: { A:0, B:0, C:0, D:0 } };
-    let currentT = null; let currentQIdx = 0; let canClick = true;
+    let state = JSON.parse(localStorage.getItem('agoraMaster_state')) || { xp: 0, progress: {} };
+    let currentQuiz = null; let qIdx = 0; let canAnswer = true;
 
-    function save() { localStorage.setItem('agoraMasterData', JSON.stringify(state)); }
+    function save() { localStorage.setItem('agoraMaster_state', JSON.stringify(state)); }
 
-    function renderMenu() {
-        const list = document.getElementById('skills-list');
-        list.innerHTML = '';
-        themes.forEach(t => {
-            const p = state.progress[t.id];
-            list.innerHTML += `
-                <div class="skill-card" onclick="startQuiz('${t.id}')">
-                    <div class="skill-icon" style="background:${t.color}">${t.icon}</div>
-                    <div class="skill-info">
-                        <div class="skill-title">${t.title}</div>
-                        <div class="skill-progress"><div class="progress-bar" style="width:${p}%; background:${t.color}"></div></div>
-                    </div>
-                    <div style="font-size:12px; color:#5f6368; margin-left:10px;">${p}%</div>
-                </div>`;
-        });
-        document.getElementById('user-xp').innerText = `${state.xp} XP`;
+    function switchMode(mode) {
+        document.getElementById('view-train').classList.toggle('hidden', mode !== 'train');
+        document.getElementById('view-rev').classList.toggle('hidden', mode !== 'rev');
+        document.getElementById('view-quiz').classList.add('hidden');
+        document.getElementById('view-fiche-detail').classList.add('hidden');
+        document.getElementById('btn-train').classList.toggle('active', mode === 'train');
+        document.getElementById('btn-rev').classList.toggle('active', mode === 'rev');
+        if(mode === 'train') renderTrain(); else renderRev();
     }
 
-    function startQuiz(id) {
-        currentT = themes.find(t => t.id === id);
-        currentQIdx = 0;
-        document.getElementById('main-view').classList.add('hidden');
-        document.getElementById('quiz-view').classList.remove('hidden');
+    function renderTrain() {
+        const container = document.getElementById('themes-grid');
+        container.innerHTML = db.themes.map(t => `
+            <div class="card" onclick="startQuiz('theme', '${t.id}')">
+                <div class="progress-ring">${state.progress[t.id] || 0}%</div>
+                <div style="font-size:32px; margin-bottom:10px;">${t.icon}</div>
+                <h4 style="margin:0;">${t.title}</h4>
+            </div>
+        `).join('');
+        document.getElementById('global-xp').innerText = `${state.xp} XP`;
+    }
+
+    function renderRev() {
+        const container = document.getElementById('fiches-list');
+        container.innerHTML = db.fiches.map(f => `
+            <div class="card" onclick="showFiche('${f.id}')">
+                <h4>${f.title}</h4>
+                <p style="font-size:12px; opacity:0.6;">Cliquez pour lire la synthèse</p>
+            </div>
+        `).join('');
+    }
+
+    function showFiche(id) {
+        const fiche = db.fiches.find(f => f.id === id);
+        document.getElementById('view-rev').classList.add('hidden');
+        document.getElementById('view-fiche-detail').classList.remove('hidden');
+        document.getElementById('fiche-content').innerHTML = fiche.content;
+    }
+
+    function startQuiz(type, id) {
+        if(type === 'theme') currentQuiz = db.themes.find(t => t.id === id).questions;
+        else currentQuiz = db.special[id];
+        
+        currentQuizId = id; qIdx = 0;
+        document.getElementById('view-train').classList.add('hidden');
+        document.getElementById('view-quiz').classList.remove('hidden');
         showQuestion();
     }
 
     function showQuestion() {
-        canClick = true;
-        const q = currentT.questions[currentQIdx];
-        document.getElementById('progress-text').innerText = `Question ${currentQIdx + 1}/${currentT.questions.length}`;
+        canAnswer = true;
+        const q = currentQuiz[qIdx];
+        document.getElementById('q-meta').innerText = `QUESTION ${qIdx + 1} / ${currentQuiz.length}`;
         document.getElementById('q-text').innerText = q.q;
-        const container = document.getElementById('options-container');
-        container.innerHTML = '';
-        q.options.forEach((opt, i) => {
-            const d = document.createElement('div');
-            d.className = 'option'; d.innerText = opt;
-            d.onclick = () => checkAns(i, d);
-            container.appendChild(d);
-        });
-        document.getElementById('q-feedback').classList.add('hidden');
-        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('feedback-area').classList.add('hidden');
+        
+        const box = document.getElementById('options-box');
+        box.innerHTML = q.options.map((opt, i) => `
+            <div class="option" onclick="checkAnswer(${i}, this)">${opt}</div>
+        `).join('');
     }
 
-    function checkAns(idx, el) {
-        if(!canClick) return; canClick = false;
-        const q = currentT.questions[currentQIdx];
-        const opts = document.querySelectorAll('.option');
-        if(idx === q.ans) {
-            el.classList.add('correct'); state.xp += 20;
+    function checkAnswer(idx, el) {
+        if(!canAnswer) return; canAnswer = false;
+        const q = currentQuiz[qIdx];
+        const isCorrect = idx === q.ans;
+        
+        if(isCorrect) {
+            el.classList.add('correct');
+            state.xp += 25; // Points gagnés SEULEMENT en cas de réussite
         } else {
-            el.classList.add('incorrect'); opts[q.ans].classList.add('correct');
+            el.classList.add('incorrect');
+            document.querySelectorAll('.option')[q.ans].classList.add('correct');
         }
-        const fb = document.getElementById('q-feedback');
-        fb.innerText = q.expl; fb.classList.remove('hidden');
-        document.getElementById('next-btn').classList.remove('hidden');
+        
+        document.getElementById('fb-text').innerText = q.expl;
+        document.getElementById('feedback-area').classList.remove('hidden');
         save();
     }
 
     function handleNext() {
-        currentQIdx++;
-        if(currentQIdx < currentT.questions.length) showQuestion();
-        else finishTheme();
+        qIdx++;
+        if(qIdx < currentQuiz.length) showQuestion();
+        else exitQuiz(true);
     }
 
-    function finishTheme() {
-        state.progress[currentT.id] = 100; state.xp += 50; save();
-        const overlay = document.createElement('div');
-        overlay.className = 'success-overlay';
-        overlay.innerHTML = `
-            <div style="font-size:60px;">🏆</div>
-            <h2 style="color:var(--g-blue)">Maîtrise acquise !</h2>
-            <p>Félicitations, tu as terminé le thème ${currentT.title}</p>
-            <button class="btn" style="width:200px" onclick="location.reload()">Retour au menu</button>
-        `;
-        document.body.appendChild(overlay);
+    function exitQuiz(finished = false) {
+        if(finished) state.progress[currentQuizId] = 100;
+        save();
+        document.getElementById('view-quiz').classList.add('hidden');
+        switchMode('train');
     }
 
-    renderMenu();
+    function startSpecial(mode) { startQuiz('special', mode); }
+
+    renderTrain();
 </script>
 </body>
 </html>
