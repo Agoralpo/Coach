@@ -3,129 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGOrA Master - Pôle 3 Ultimate</title>
+    <title>AGOrA Master Pro - Pôle 3 Excellence</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d2d3; --secondary: #feca57; --accent: #ff6b6b; --bg: #0f172a; --card-bg: #1e293b; }
+        :root { --primary: #00d2d3; --secondary: #feca57; --accent: #ff6b6b; --bg: #0f172a; --card: #1e293b; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; }
-        
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
+
+        /* Header & Gamification */
         .header { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary); }
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .xp-bar-outer { width: 120px; height: 10px; background: #334155; border-radius: 5px; margin-top: 5px; }
-        .xp-bar-inner { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+        .xp-bar-container { width: 140px; height: 10px; background: #334155; border-radius: 5px; margin-top: 5px; overflow: hidden; }
+        .xp-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
+        /* Navigation */
         nav { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem; background: #1e293b; flex-wrap: wrap; }
-        .nav-link { background: #334155; border: none; color: #94a3b8; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.8rem; }
-        .nav-link.active { background: var(--primary); color: var(--bg); }
+        .nav-link { background: #334155; border: none; color: #94a3b8; padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.85rem; }
+        .nav-link.active { background: var(--primary); color: var(--bg); transform: scale(1.05); }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        /* Container */
+        .container { max-width: 950px; margin: 0 auto; padding: 2rem; }
         section { display: none; }
-        section.active { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        section.active { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: var(--card-bg); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #334155; }
-        .lesson-box { background: #0f172a; padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border-left: 5px solid var(--secondary); }
-        .lesson-box h3 { color: var(--secondary); margin-bottom: 0.8rem; }
+        /* UI Cards */
+        .card { background: var(--card); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .scenario-tag { display: inline-block; background: var(--secondary); color: #000; padding: 3px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; }
         
-        .q-option { width: 100%; text-align: left; padding: 1rem; margin-bottom: 0.7rem; background: #334155; border: 2px solid transparent; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; }
-        .q-option:hover { border-color: var(--primary); background: #475569; }
-        .q-option.correct { background: #059669; border-color: #34d399; }
-        .q-option.wrong { background: #dc2626; border-color: #f87171; }
+        /* Interaction Modules */
+        .option { width: 100%; text-align: left; padding: 1.2rem; margin-bottom: 0.8rem; background: #334155; border: 2px solid transparent; color: #cbd5e1; border-radius: 15px; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
+        .option:hover { border-color: var(--primary); background: #475569; }
+        .option.correct { background: var(--success); color: white; border-color: #34d399; }
+        .option.wrong { background: var(--accent); color: white; border-color: #f87171; }
         
-        #remediation { margin-top: 1.5rem; padding: 1rem; border-radius: 10px; display: none; background: rgba(255,255,255,0.05); border: 1px dashed var(--primary); }
+        .remediation { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; background: rgba(0, 210, 211, 0.1); border: 1px solid var(--primary); line-height: 1.5; }
+        
+        /* Skills Wall */
+        .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .badge { background: #334155; padding: 1.5rem; border-radius: 20px; text-align: center; opacity: 0.2; filter: grayscale(1); transition: 0.8s; border: 2px solid transparent; }
+        .badge.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--secondary); background: rgba(254, 202, 87, 0.05); }
+        .badge-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+        /* Course Blocks */
+        .cours-block { background: #0f172a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border-left: 6px solid var(--primary); }
+        .cours-block h3 { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; }
+        .cours-block ul { list-style: none; padding-left: 0; }
+        .cours-block li::before { content: "• "; color: var(--secondary); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="logo">AGOrA ULTIMATE 🎓</div>
+        <div class="logo">AGOrA MASTER ELITE</div>
         <div class="stats">
-            <span id="lvl-display" style="font-weight: 800; color: var(--secondary);">NIV. 1</span>
-            <div class="xp-bar-outer"><div class="xp-bar-inner" id="xp-bar"></div></div>
+            <span id="lvl" style="font-weight: 800; color: var(--secondary);">NIV. 1</span>
+            <div class="xp-bar-container"><div class="xp-bar-fill" id="xp-fill"></div></div>
         </div>
     </header>
 
     <nav>
         <button class="nav-link active" onclick="nav('home')">🏠 Accueil</button>
-        <button class="nav-link" onclick="nav('cours')">📖 Cours & Savoirs</button>
-        <button class="nav-link" onclick="nav('entrainement')">🎯 QCM Certification</button>
-        <button class="nav-link" onclick="nav('simulateur')">💻 Simulateur Pro</button>
+        <button class="nav-link" onclick="nav('cours')">📖 Cours & Méthode</button>
+        <button class="nav-link" onclick="nav('cas')">🎯 Cas Pratiques</button>
+        <button class="nav-link" onclick="nav('simulation')">⚙️ Simulation Paie</button>
+        <button class="nav-link" onclick="nav('certifs')">📜 Certifications</button>
     </nav>
 
     <div class="container">
         <section id="home" class="active">
             <div class="card" style="text-align: center;">
-                <h1 style="font-size: 2.5rem; color: var(--primary);">Master Pôle 3</h1>
-                <p>Administration du Personnel : Suivi de carrière, Paie et Social.</p>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;">
-                    <div class="lesson-box"><h3>3.1</h3>Carrière & Recrutement</div>
-                    <div class="lesson-box"><h3>3.2</h3>Paie & Temps de travail</div>
-                    <div class="lesson-box"><h3>3.3</h3>Dialogue Social & RGPD</div>
-                    <div class="lesson-box"><h3>E32</h3>Objectif Examen</div>
+                <h1 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--primary);">Prêt pour l'Unité U32 ?</h1>
+                <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem;">Système de certification expert pour l'Administration du Personnel.</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
+                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.1</strong><br>Carrière & Recrutement</div>
+                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.2</strong><br>Paie & Temps</div>
+                    <div class="card" style="padding: 1rem;"><strong>Pôle 3.3</strong><br>Dialogue Social</div>
                 </div>
+                <button class="nav-link" style="margin-top: 2rem; background: var(--primary); color: #000; padding: 1.2rem 3rem; font-size: 1.1rem;" onclick="nav('cas')">Lancer la mission</button>
             </div>
         </section>
 
         <section id="cours">
             <div class="card">
-                <h2>📖 Les Savoirs Associés (Pôle 3)</h2>
-                <div class="lesson-box">
-                    <h3>Les Formalités d'Embauche</h3>
-                    <p><strong>DPAE :</strong> À envoyer à l'URSSAF avant l'embauche (8j max).<br>
-                    <strong>RUP :</strong> Registre obligatoire listant les salariés par ordre d'arrivée.<br>
-                    <strong>VIP :</strong> Visite d'Information et de Prévention sous 3 mois maximum.</p>
+                <h2>📖 Manuel de l'Inspecteur : Pôle 3</h2>
+                
+                <div class="cours-block">
+                    <h3>3.1 - Suivi de la carrière</h3>
+                    <ul>
+                        <li><strong>DPAE :</strong> À envoyer à l'URSSAF AVANT toute prise de poste (8j max).</li>
+                        <li><strong>Dossier Personnel :</strong> Doit être actualisé (adresse, RIB, diplômes) mais respecter le RGPD.</li>
+                        <li><strong>Visite Médicale :</strong> La VIP doit avoir lieu sous 3 mois après l'embauche.</li>
+                    </ul>
                 </div>
-                <div class="lesson-box">
-                    <h3>La Gestion de la Paie</h3>
-                    <p><strong>Salaire Brut :</strong> Salaire avant cotisations.<br>
-                    <strong>Variables :</strong> Heures sup, primes, absences, avantages en nature.<br>
-                    <strong>Dossier Paie :</strong> RIB, CNI, contrat, fiche de poste.</p>
+
+                <div class="cours-block">
+                    <h3>3.2 - Suivi Financier (Paie)</h3>
+                    <ul>
+                        <li><strong>Variables de Paie :</strong> Heures sup (+25% ou +50%), primes, absences, tickets resto.</li>
+                        <li><strong>Échantillonnage :</strong> Calcul : Net = Brut - Cotisations (environ 22% pour un non-cadre).</li>
+                        <li><strong>Documents de sortie :</strong> Certificat, Attestation Pôle Emploi, Solde de tout compte.</li>
+                    </ul>
                 </div>
-                <div class="lesson-box">
-                    <h3>Le Dialogue Social</h3>
-                    <p><strong>CSE :</strong> Comité Social et Économique obligatoire dès 11 salariés.<br>
-                    <strong>DUERP :</strong> Document Unique d'Évaluation des Risques Professionnels.</p>
+
+                <div class="cours-block">
+                    <h3>3.3 - Relations Sociales</h3>
+                    <ul>
+                        <li><strong>Élections CSE :</strong> Obligatoire si l'effectif dépasse 11 salariés pendant 12 mois.</li>
+                        <li><strong>DUERP :</strong> Document listant les risques et actions de prévention.</li>
+                        <li><strong>Affichage :</strong> Inspection du travail, Services de secours, Consignes incendie.</li>
+                    </ul>
                 </div>
+                <button class="nav-link" style="width: 100%;" onclick="addXP(50); unlock('reader')">Valider les acquis théoriques (+50 XP)</button>
             </div>
         </section>
 
-        <section id="entrainement">
+        <section id="cas">
             <div class="card">
-                <h2 id="q-num">Question 1/20</h2>
-                <p id="q-text" style="font-size: 1.2rem; margin-bottom: 1.5rem;"></p>
-                <div id="q-options"></div>
-                <div id="remediation"></div>
-                <button id="next-btn" class="nav-link" style="display:none; width: 100%; margin-top: 1rem; background: var(--primary); color: #000;" onclick="nextQ()">Question Suivante</button>
+                <span id="cas-tag" class="scenario-tag">ORGANISATION</span>
+                <h2 id="cas-q" style="margin-bottom: 2rem;">Question technique</h2>
+                <div id="cas-options"></div>
+                <div id="cas-rem" class="remediation"></div>
+                <button id="next-cas" class="nav-link" style="display:none; width: 100%; margin-top: 1.5rem; background: var(--primary); color: #000;" onclick="nextCas()">Cas Suivant ➔</button>
             </div>
         </section>
 
-        <section id="simulateur">
+        <section id="simulation">
+            <div class="card" style="text-align: center;">
+                <span class="scenario-tag">EXERCICE DE PAIE</span>
+                <h2>Calcul du Salaire de l'Apprenti</h2>
+                <p style="margin: 1rem 0;">M. Lamine est apprenti. Son salaire brut est de <strong>1200 €</strong>. <br>Étant apprenti, il est <strong>exonéré</strong> de cotisations salariales (dans la limite du plafond).</p>
+                <div class="cours-block">Combien doit-on lui verser en <strong>Net à Payer</strong> ?</div>
+                <input type="number" id="input-calc" style="padding: 12px; border-radius: 8px; border: 2px solid var(--primary); background: #0f172a; color: white; width: 150px; text-align: center; font-size: 1.2rem;">
+                <button class="nav-link" onclick="checkSim()">Valider le montant</button>
+            </div>
+        </section>
+
+        <section id="certifs">
             <div class="card">
-                <h2>💻 Simulateur de Gestion Administrative</h2>
-                <div class="lesson-box">
-                    <h3>Cas n°1 : Le Bulletin d'Adrien</h3>
-                    <p>Brut : 2000€. Cotisations : 22%. Quel est le Net ?</p>
-                    <input type="number" id="calc-res" style="padding: 10px; border-radius: 5px; width: 100px;">
-                    <button class="nav-link" onclick="checkCalc()">Vérifier</button>
+                <h2>📜 Vos Certifications Professionnelles</h2>
+                <div class="badge-grid">
+                    <div class="badge" id="b-reader"><div class="badge-icon">📖</div>Théoricien RH</div>
+                    <div class="badge" id="b-cas"><div class="badge-icon">🎯</div>Expert Terrain</div>
+                    <div class="badge" id="b-paie"><div class="badge-icon">💰</div>Gestionnaire Paie</div>
+                    <div class="badge" id="b-master"><div class="badge-icon">👑</div>Major AGOrA</div>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
-        let xp = 0; let lvl = 1; let cur = 0;
-        const db = [
-            {q: "La DPAE est une obligation :", o: ["Civile", "Sociale et fiscale", "Facultative"], c: 1, e: "Elle permet l'immatriculation de l'employeur et du salarié."},
-            {q: "Un bulletin de paie doit être conservé par l'employeur pendant :", o: ["1 an", "5 ans", "Indéfiniment"], c: 1, e: "C'est la durée légale de conservation des bulletins de paie papier ou numérique."},
-            {q: "Le temps de travail légal par semaine est de :", o: ["35 heures", "39 heures", "40 heures"], c: 0, e: "La durée légale est de 35h, les heures au-delà sont des heures supplémentaires."},
-            {q: "Quel document est remis au salarié pour attester de son emploi à son départ ?", o: ["Le RUP", "Le certificat de travail", "Le contrat de travail"], c: 1, e: "Il indique les dates d'entrée, de sortie et la nature de l'emploi."},
-            {q: "Le CSE est obligatoire à partir de quel seuil de salariés ?", o: ["10", "11", "50"], c: 1, e: "Le Comité Social et Économique est obligatoire dès 11 salariés pendant 12 mois consécutifs."},
-            {q: "Quel sigle désigne le document d'évaluation des risques ?", o: ["DPAE", "DUERP", "RGPD"], c: 1, e: "Document Unique d'Évaluation des Risques Professionnels."},
-            {q: "La période d'essai peut-elle être renouvelée ?", o: ["Oui, si l'accord de branche le prévoit", "Non jamais", "Oui, indéfiniment"], c: 0, e: "Le renouvellement doit être prévu par le contrat et la convention collective."},
-            {q: "Une absence pour maladie doit être justifiée sous :", o: ["24h", "48h", "72h"], c: 1, e: "Le salarié doit envoyer son arrêt de travail sous 48h maximum."},
-            {q: "Quelle mention est interdite sur un bulletin de paie ?", o: ["L'adresse", "Le droit de grève", "Le salaire net"], c: 1, e: "L'exercice du droit de grève ne doit jamais figurer sur le bulletin."},
-            {q: "Le salaire net est :", o: ["Supérieur au brut", "Égal au brut", "Inférieur au brut"], c: 2, e: "Net = Brut - Cotisations sociales."}
+        let xp = 0; let lvl = 1; let current = 0;
+        
+        const scenarios = [
+            {
+                tag: "LOGISTI-SUD (ENTRÉE)",
+                q: "Un nouveau préparateur de commandes arrive demain à 8h. Quelle action est prioritaire ?",
+                o: ["Lui préparer ses chaussures de sécurité", "Valider la DPAE sur le portail de l'URSSAF", "Lui faire visiter les locaux"],
+                c: 1,
+                r: "La DPAE est l'acte fondateur du contrat. Sans elle, l'embauche est considérée comme du travail dissimulé."
+            },
+            {
+                tag: "ASSOCIATION GREEN-ACT (SANTÉ)",
+                q: "Une salariée se blesse légèrement avec un massicot. Sous quel délai devez-vous déclarer l'accident ?",
+                o: ["48 heures", "24 heures", "7 jours"],
+                c: 0,
+                r: "L'employeur dispose de 48h (hors dimanches et jours fériés) pour déclarer un accident du travail."
+            },
+            {
+                tag: "START-UP INNOVA (RGPD)",
+                q: "Un manager vous demande la liste des adresses personnelles et des numéros de téléphone de son équipe. Que faites-vous ?",
+                o: ["Vous lui donnez immédiatement par mail", "Vous refusez car ce sont des données privées protégées", "Vous lui demandez pourquoi"],
+                c: 1,
+                r: "Le RGPD limite l'accès aux données personnelles. Seul le service RH peut les manipuler, sauf nécessité de service absolue."
+            },
+            {
+                tag: "CABINET JURIDI-PLUS (FIN DE CONTRAT)",
+                q: "Un salarié démissionne. Lequel de ces documents n'est PAS obligatoire à son départ ?",
+                o: ["L'attestation Pôle Emploi", "Le certificat de travail", "Une lettre de recommandation"],
+                c: 2,
+                r: "Les 3 documents obligatoires sont : Certificat, Attestation Pôle Emploi et Solde de tout compte. La recommandation est facultative."
+            }
         ];
 
         function nav(id) {
@@ -133,67 +191,69 @@
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            if(id === 'entrainement') startQuiz();
+            if(id === 'cas') loadCas();
         }
 
-        function startQuiz() {
-            cur = 0; loadQ();
+        function addXP(v) {
+            xp += v;
+            if(xp >= 200) { lvl++; xp -= 200; alert("Niveau supérieur atteint !"); }
+            document.getElementById('xp-fill').style.width = (xp/200*100) + "%";
+            document.getElementById('lvl').innerText = "NIV. " + lvl;
         }
 
-        function loadQ() {
-            const q = db[cur];
-            document.getElementById('q-num').innerText = `Question ${cur + 1}/${db.length}`;
-            document.getElementById('q-text').innerText = q.q;
-            const container = document.getElementById('q-options');
-            container.innerHTML = '';
-            document.getElementById('remediation').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'none';
+        function unlock(id) { document.getElementById('b-'+id).classList.add('unlocked'); }
 
-            q.o.forEach((opt, i) => {
-                const b = document.createElement('button');
-                b.className = 'q-option';
-                b.innerText = opt;
-                b.onclick = () => check(i);
-                container.appendChild(b);
+        function loadCas() {
+            const data = scenarios[current];
+            document.getElementById('cas-tag').innerText = data.tag;
+            document.getElementById('cas-q').innerText = data.q;
+            const optDiv = document.getElementById('cas-options');
+            optDiv.innerHTML = '';
+            document.getElementById('cas-rem').style.display = 'none';
+            document.getElementById('next-cas').style.display = 'none';
+
+            data.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.innerText = opt;
+                btn.onclick = () => checkCas(i);
+                optDiv.appendChild(btn);
             });
         }
 
-        function check(i) {
-            const q = db[cur];
-            const options = document.querySelectorAll('.q-option');
-            options.forEach(b => b.style.pointerEvents = 'none');
+        function checkCas(idx) {
+            const data = scenarios[current];
+            const btns = document.querySelectorAll('.option');
+            btns.forEach(b => b.style.pointerEvents = 'none');
             
-            if(i === q.c) {
-                options[i].classList.add('correct');
-                xp += 20;
-            } else {
-                options[i].classList.add('wrong');
-                options[q.c].classList.add('correct');
-            }
-            
-            const rem = document.getElementById('remediation');
+            const rem = document.getElementById('cas-rem');
             rem.style.display = 'block';
-            rem.innerHTML = `<strong>Explication :</strong> ${q.e}`;
-            document.getElementById('next-btn').style.display = 'block';
-            updateXP();
+            rem.innerHTML = `<strong>Analyse de l'Inspecteur :</strong><br>${data.r}`;
+
+            if(idx === data.c) {
+                btns[idx].classList.add('correct');
+                addXP(40);
+            } else {
+                btns[idx].classList.add('wrong');
+                btns[data.c].classList.add('correct');
+            }
+            document.getElementById('next-cas').style.display = 'block';
         }
 
-        function nextQ() {
-            cur++;
-            if(cur < db.length) loadQ();
-            else { alert("Bravo ! Session terminée."); nav('home'); }
+        function nextCas() {
+            current = (current + 1) % scenarios.length;
+            if(current === 0) unlock('cas');
+            loadCas();
         }
 
-        function updateXP() {
-            if(xp >= 100) { lvl++; xp = 0; }
-            document.getElementById('xp-bar').style.width = xp + "%";
-            document.getElementById('lvl-display').innerText = "NIV. " + lvl;
-        }
-
-        function checkCalc() {
-            const val = document.getElementById('calc-res').value;
-            if(val == "1560") { alert("✅ Parfait ! 2000 * 0.78 = 1560€"); xp += 50; updateXP(); }
-            else { alert("❌ Erreur. Indice : déduisez 22% du brut."); }
+        function checkSim() {
+            const val = document.getElementById('input-calc').value;
+            if(val == "1200") {
+                alert("✅ Parfait ! Un apprenti ne paie pas de cotisations sociales (sauf dépassement du seuil). Brut = Net.");
+                addXP(100); unlock('paie'); if(lvl >= 2) unlock('master');
+            } else {
+                alert("❌ Réfléchissez... Relisez la règle sur l'exonération des apprentis.");
+            }
         }
     </script>
 </body>
