@@ -3,212 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGOrA Master Pro - Pôle 3 Excellence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>AGORA Master - Le Jeu RH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d2d3; --secondary: #feca57; --accent: #ff6b6b; --bg: #0f172a; --card: #1e293b; --success: #10b981; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #f8fafc; line-height: 1.6; overflow-x: hidden; }
-        .header { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary); }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .xp-bar-container { width: 140px; height: 10px; background: #334155; border-radius: 5px; margin-top: 5px; overflow: hidden; }
-        .xp-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        nav { display: flex; justify-content: center; gap: 0.5rem; padding: 1rem; background: #1e293b; flex-wrap: wrap; }
-        .nav-link { background: #334155; border: none; color: #94a3b8; padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.85rem; }
-        .nav-link.active { background: var(--primary); color: var(--bg); transform: scale(1.05); }
-        .container { max-width: 950px; margin: 0 auto; padding: 2rem; }
-        section { display: none; }
-        section.active { display: block; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: var(--card); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .scenario-tag { display: inline-block; background: var(--secondary); color: #000; padding: 3px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; }
-        .option { width: 100%; text-align: left; padding: 1.2rem; margin-bottom: 0.8rem; background: #334155; border: 2px solid transparent; color: #cbd5e1; border-radius: 15px; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
-        .option:hover { border-color: var(--primary); background: #475569; }
-        .option.correct { background: var(--success); color: white; border-color: #34d399; }
-        .option.wrong { background: var(--accent); color: white; border-color: #f87171; }
-        .remediation { display: none; margin-top: 1.5rem; padding: 1.5rem; border-radius: 12px; background: rgba(0, 210, 211, 0.1); border: 1px solid var(--primary); }
-        .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .badge { background: #334155; padding: 1.5rem; border-radius: 20px; text-align: center; opacity: 0.2; filter: grayscale(1); transition: 0.8s; border: 2px solid transparent; }
-        .badge.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--secondary); background: rgba(254, 202, 87, 0.05); }
-        .cours-block { background: #0f172a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border-left: 6px solid var(--primary); }
-        .cours-block h3 { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; }
+        :root {
+            --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
+            --gray-bg: #f8f9fa; --text: #202124; --border: #dadce0;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Roboto', sans-serif; margin: 0; background-color: #fff; color: var(--text);
+            line-height: 1.5; display: flex; flex-direction: column; min-height: 100vh;
+        }
+        header { 
+            padding: 15px 20px; border-bottom: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; background: #fff; z-index: 1000;
+        }
+        .logo { font-size: 20px; font-weight: 500; }
+        .logo span:nth-child(1) { color: var(--g-blue); } .logo span:nth-child(2) { color: var(--g-red); }
+        .logo span:nth-child(3) { color: var(--g-yellow); } .logo span:nth-child(4) { color: var(--g-blue); }
+        .logo span:nth-child(5) { color: var(--g-green); } .logo span:nth-child(6) { color: var(--g-red); }
+        
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; width: 100%; }
+        
+        /* Dashboard Pix Style */
+        .skill-card {
+            border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 15px;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center;
+        }
+        .skill-card:active { transform: scale(0.98); background-color: var(--gray-bg); }
+        .skill-icon { width: 45px; height: 45px; border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; }
+        .skill-info { flex-grow: 1; }
+        .skill-title { font-weight: 500; font-size: 16px; margin: 0; }
+        .skill-progress { height: 6px; background: #eee; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .progress-bar { height: 100%; width: 0%; transition: width 0.5s; }
+
+        /* Quiz UI */
+        .hidden { display: none; }
+        .question-box { animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .option {
+            border: 1px solid var(--border); border-radius: 24px; padding: 15px 20px; margin: 10px 0;
+            cursor: pointer; transition: 0.2s; font-size: 15px;
+        }
+        .option:active { background-color: var(--gray-bg); }
+        .correct { background-color: #e6f4ea !important; border-color: var(--g-green) !important; color: #137333; }
+        .incorrect { background-color: #fce8e6 !important; border-color: var(--g-red) !important; color: #c5221f; }
+        
+        .feedback { 
+            margin-top: 20px; padding: 15px; border-radius: 8px; background: var(--gray-bg); 
+            border-left: 4px solid var(--g-blue); font-size: 14px;
+        }
+        
+        .btn {
+            background: var(--g-blue); color: white; border: none; padding: 12px 24px;
+            border-radius: 4px; font-weight: 500; width: 100%; margin-top: 15px; cursor: pointer;
+        }
+
+        .success-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 2000; text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">AGOrA MASTER ELITE</div>
-        <div class="stats">
-            <span id="lvl" style="font-weight: 800; color: var(--secondary);">NIV. 1</span>
-            <div class="xp-bar-container"><div class="xp-bar-fill" id="xp-fill"></div></div>
+<header>
+    <div class="logo"><span>A</span><span>G</span><span>O</span><span>R</span><span>A</span> <span>Master</span></div>
+    <div id="user-xp" style="font-weight: 500; color: var(--g-blue);">0 XP</div>
+</header>
+
+<main class="container" id="main-view">
+    <h2 style="font-weight: 400; margin-bottom: 25px;">Mes Compétences AGORA</h2>
+    
+    <div id="skills-list">
         </div>
-    </header>
+</main>
 
-    <nav>
-        <button class="nav-link active" onclick="nav('home')">🏠 Accueil</button>
-        <button class="nav-link" onclick="nav('cours')">📖 Cours P3</button>
-        <button class="nav-link" onclick="nav('cas')">🎯 Cas Pratiques</button>
-        <button class="nav-link" onclick="nav('simulation')">⚙️ Calculateur Paie</button>
-        <button class="nav-link" onclick="nav('audit')">🕵️ Audit Dossier</button>
-        <button class="nav-link" onclick="nav('lexique')">📚 Lexique</button>
-        <button class="nav-link" onclick="nav('certifs')">📜 Succès</button>
-    </nav>
-
-    <div class="container">
-        <section id="home" class="active">
-            <div class="card" style="text-align: center;">
-                <h1 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--primary);">Spécialiste Pôle 3</h1>
-                <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2rem;">Maîtrisez l'Unité U32 : Administrer le personnel.</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
-                    <div class="card" style="padding: 1rem;"><strong>3.1</strong><br>Carrière & Recrutement</div>
-                    <div class="card" style="padding: 1rem;"><strong>3.2</strong><br>Paie & Temps</div>
-                    <div class="card" style="padding: 1rem;"><strong>3.3</strong><br>Dialogue Social</div>
-                </div>
-            </div>
-        </section>
-
-        <section id="cours">
-            <div class="card">
-                <h2>📖 Manuel AGOrA : Pôle 3</h2>
-                <div class="cours-block">
-                    <h3>3.1 - Le Recrutement & Intégration</h3>
-                    <p>Le recrutement interne s'adresse aux membres déjà présents, l'externe à ceux étrangers à l'entreprise. La DPAE est obligatoire sous 8j avant l'embauche auprès de l'URSSAF.</p>
-                </div>
-                <div class="cours-block">
-                    <h3>3.2 - Gestion Administrative & Paie</h3>
-                    <p>Le <strong>RUP (Registre Unique)</strong> est obligatoire dès le 1er salarié. L'avenant est obligatoire pour toute modification d'un élément essentiel (salaire, durée, lieu).</p>
-                </div>
-                <div class="cours-block">
-                    <h3>3.3 - Relations Sociales</h3>
-                    <p>Le <strong>CSE</strong> est obligatoire dès 11 salariés. Le <strong>RGPD</strong> impose une protection stricte des données personnelles des employés.</p>
-                </div>
-                <button class="nav-link" style="width: 100%; background: var(--primary); color: #1e293b;" onclick="addXP(50); unlock('reader')">Valider la théorie (+50 XP)</button>
-            </div>
-        </section>
-
-        <section id="cas">
-            <div class="card">
-                <span id="cas-tag" class="scenario-tag">SITUATION</span>
-                <h2 id="cas-q" style="margin-bottom: 2rem;">Question technique</h2>
-                <div id="cas-options"></div>
-                <div id="cas-rem" class="remediation"></div>
-                <button id="next-cas" class="nav-link" style="display:none; width: 100%; margin-top: 1.5rem; background: var(--primary); color: #000;" onclick="nextCas()">Suivant ➔</button>
-            </div>
-        </section>
-
-        <section id="simulation">
-            <div class="card" style="text-align: center;">
-                <span class="scenario-tag">CAS GLORIA MIOTY</span>
-                <h2>Calcul du Salaire de Base Brut</h2>
-                <p style="margin: 1rem 0;">Mme Mioty a un taux horaire de <strong>18,59 €</strong> pour <strong>151,67 h</strong> mensuelles.</p>
-                <div class="cours-block">Quel est son salaire de base (arrondi au centime) ?</div>
-                <input type="number" id="input-calc" step="0.01" style="padding: 12px; border-radius: 8px; border: 2px solid var(--primary); background: #0f172a; color: white; width: 180px; text-align: center; font-size: 1.2rem;">
-                <button class="nav-link" onclick="checkSim()">Vérifier le montant</button>
-            </div>
-        </section>
-
-        <section id="audit">
-            <div class="card">
-                <h2>🕵️ Audit de Dossier (RGPD)</h2>
-                <p style="margin-bottom: 1rem;">Vous analysez un dossier salarié. Lequel de ces documents est <strong>INTERDIT</strong> par le RGPD ?</p>
-                <button class="option" onclick="addXP(50); unlock('audit'); alert('Correct ! Les opinions politiques sont des données sensibles interdites.')">Détails des opinions politiques</button>
-                <button class="option" onclick="alert('Faux. Le RIB est nécessaire pour la paie.')">Copie du RIB</button>
-                <button class="option" onclick="alert('Faux. Le diplôme justifie la qualification.')">Copie du diplôme</button>
-            </div>
-        </section>
-
-        <section id="lexique">
-            <div class="card">
-                <h2>📚 Lexique de l'Inspecteur</h2>
-                <div class="cours-block"><strong>Avenant</strong> : Acte écrit modifiant ou complétant le contrat initial.</div>
-                <div class="cours-block"><strong>DPAE</strong> : Déclaration Préalable à l'Embauche (obligatoire URSSAF).</div>
-                <div class="cours-block"><strong>RUP</strong> : Registre Unique du Personnel (chronologique et indélébile).</div>
-                <div class="cours-block"><strong>Onboarding</strong> : Processus d'accueil et d'intégration.</div>
-            </div>
-        </section>
-
-        <section id="certifs">
-            <div class="card">
-                <h2>📜 Vos Certifications Professionnelles</h2>
-                <div class="badge-grid">
-                    <div class="badge" id="b-reader"><div class="badge-icon">📖</div>Théoricien</div>
-                    <div class="badge" id="b-cas"><div class="badge-icon">🎯</div>Praticien</div>
-                    <div class="badge" id="b-paie"><div class="badge-icon">💰</div>Comptable</div>
-                    <div class="badge" id="b-audit"><div class="badge-icon">🕵️</div>Auditeur</div>
-                </div>
-            </div>
-        </section>
+<main class="container hidden" id="quiz-view">
+    <div id="quiz-content">
+        <div id="progress-text" style="font-size: 12px; color: #5f6368; margin-bottom: 10px;">Question 1/3</div>
+        <h3 id="q-text" style="font-weight: 400; margin-top: 0;"></h3>
+        <div id="options-container"></div>
+        <div id="q-feedback" class="hidden feedback"></div>
+        <button id="next-btn" class="btn hidden" onclick="handleNext()">Continuer</button>
     </div>
+</main>
 
-    <script>
-        let xp = 0; let lvl = 1; let current = 0;
-        const scenarios = [
-            {tag: "RECRUTEMENT", q: "Quelle est la définition d'une fiche de poste ?", o: ["Le CV du candidat", "Description des missions et tâches", "Le profil idéal"], c: 1, r: "La fiche de poste décrit les missions, les tâches et la place dans l'organigramme."},
-            {tag: "ADMINISTRATIF", q: "Le RUP doit être conservé combien de temps après le départ d'un salarié ?", o: ["1 an", "5 ans", "10 ans"], c: 1, r: "Le registre du personnel doit être conservé pendant 5 ans."},
-            {tag: "JURIDIQUE", q: "Un avenant est obligatoire si on change quel élément ?", o: ["Le numéro de téléphone", "La rémunération brute", "La banque du salarié"], c: 1, r: "La rémunération est un élément essentiel du contrat exigeant un avenant."},
-            {tag: "DÉPLACEMENT", q: "Quel document couvre le salarié en cas d'accident lors d'une mission ?", o: ["Le billet de train", "L'ordre de mission", "La facture hôtel"], c: 1, r: "L'ordre de mission est indispensable pour la protection sociale et le remboursement."}
-        ];
+<script>
+    const themes = [
+        { id: 'A', title: 'Recrutement', icon: '👤', color: '#4285F4', questions: [
+            { q: "Différence entre recrutement interne et externe ?", options: ["L'interne est plus cher [cite: 6]", "L'externe cible des personnes hors personnel [cite: 7]", "L'interne n'a pas d'entretien [cite: 8]"], ans: 1, expl: "Le recrutement externe s'adresse à des personnes ne faisant pas partie du personnel de l'entreprise. [cite: 7, 9]" },
+            { q: "Qu'est-ce qu'une 'Fiche de poste' ?", options: ["Le CV du candidat [cite: 11]", "Le portrait du candidat idéal [cite: 12]", "Description des missions et place organigramme [cite: 13]"], ans: 2, expl: "Elle décrit les missions, les tâches et la place dans l'organigramme. [cite: 13, 14]" },
+            { q: "Formalité 8 jours avant l'embauche ?", options: ["Signature contrat [cite: 16]", "Visite médicale [cite: 17]", "La DPAE [cite: 18]"], ans: 2, expl: "La Déclaration Préalable à l'Embauche (DPAE) est obligatoire. [cite: 18, 19]" }
+        ]},
+        { id: 'B', title: 'Intégration', icon: '🤝', color: '#EA4335', questions: [
+            { q: "Qu'est-ce que l'Onboarding ?", options: ["Un licenciement", "Un processus d'accueil des nouveaux [cite: 30]", "Une réunion de direction"], ans: 1, expl: "C'est l'embarquement : l'accueil pour bien intégrer les nouveaux. [cite: 29, 30]" },
+            { q: "Contenu du livret d'accueil ?", options: ["Bulletins de salaire [cite: 33]", "Organigramme et règlement intérieur [cite: 34]", "Codes bancaires [cite: 35]"], ans: 1, expl: "Il contient l'organigramme, le règlement et les infos pratiques. [cite: 34, 36]" }
+        ]},
+        { id: 'C', title: 'Gestion Administrative', icon: '📂', color: '#FBBC05', questions: [
+            { q: "Amende pour non-tenue du registre du personnel ?", options: ["135 € [cite: 59]", "750 € par salarié [cite: 60]", "Fermeture définitive [cite: 61]"], ans: 1, expl: "L'employeur risque 750 € d'amende par salarié concerné. [cite: 60, 62]" },
+            { q: "Quand un avenant est-il OBLIGATOIRE ?", options: ["Changement de déco [cite: 66]", "Changement de banque [cite: 67]", "Modif élément essentiel (salaire, lieu) [cite: 65]"], ans: 2, expl: "Obligatoire pour modifier la rémunération, la durée, le lieu ou le poste. [cite: 65, 67]" }
+        ]},
+        { id: 'D', title: 'Déplacements', icon: '✈️', color: '#34A853', questions: [
+            { q: "Document couvrant le salarié en cas d'accident ?", options: ["Billet de train [cite: 74]", "Ordre de mission [cite: 75]", "Devis hôtel [cite: 76]"], ans: 1, expl: "L'ordre de mission est le document obligatoire pour la couverture. [cite: 75, 77]" },
+            { q: "Les 3 types de contraintes ?", options: ["Temporelles, géographiques, financières [cite: 79]", "Météo et gastronomie [cite: 80]", "Informatique et politique [cite: 81]"], ans: 0, expl: "On prend en compte le temps, le lieu et le budget. [cite: 79, 81]" }
+        ]}
+    ];
 
-        function nav(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.target.classList.add('active');
-            if(id === 'cas') loadCas();
+    let state = JSON.parse(localStorage.getItem('agoraMasterData')) || { xp: 0, progress: { A:0, B:0, C:0, D:0 } };
+    let currentT = null; let currentQIdx = 0; let canClick = true;
+
+    function save() { localStorage.setItem('agoraMasterData', JSON.stringify(state)); }
+
+    function renderMenu() {
+        const list = document.getElementById('skills-list');
+        list.innerHTML = '';
+        themes.forEach(t => {
+            const p = state.progress[t.id];
+            list.innerHTML += `
+                <div class="skill-card" onclick="startQuiz('${t.id}')">
+                    <div class="skill-icon" style="background:${t.color}">${t.icon}</div>
+                    <div class="skill-info">
+                        <div class="skill-title">${t.title}</div>
+                        <div class="skill-progress"><div class="progress-bar" style="width:${p}%; background:${t.color}"></div></div>
+                    </div>
+                    <div style="font-size:12px; color:#5f6368; margin-left:10px;">${p}%</div>
+                </div>`;
+        });
+        document.getElementById('user-xp').innerText = `${state.xp} XP`;
+    }
+
+    function startQuiz(id) {
+        currentT = themes.find(t => t.id === id);
+        currentQIdx = 0;
+        document.getElementById('main-view').classList.add('hidden');
+        document.getElementById('quiz-view').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        canClick = true;
+        const q = currentT.questions[currentQIdx];
+        document.getElementById('progress-text').innerText = `Question ${currentQIdx + 1}/${currentT.questions.length}`;
+        document.getElementById('q-text').innerText = q.q;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        q.options.forEach((opt, i) => {
+            const d = document.createElement('div');
+            d.className = 'option'; d.innerText = opt;
+            d.onclick = () => checkAns(i, d);
+            container.appendChild(d);
+        });
+        document.getElementById('q-feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+    }
+
+    function checkAns(idx, el) {
+        if(!canClick) return; canClick = false;
+        const q = currentT.questions[currentQIdx];
+        const opts = document.querySelectorAll('.option');
+        if(idx === q.ans) {
+            el.classList.add('correct'); state.xp += 20;
+        } else {
+            el.classList.add('incorrect'); opts[q.ans].classList.add('correct');
         }
+        const fb = document.getElementById('q-feedback');
+        fb.innerText = q.expl; fb.classList.remove('hidden');
+        document.getElementById('next-btn').classList.remove('hidden');
+        save();
+    }
 
-        function addXP(v) {
-            xp += v; if(xp >= 200) { lvl++; xp -= 200; alert("Niveau supérieur !"); }
-            document.getElementById('xp-fill').style.width = (xp/200*100) + "%";
-            document.getElementById('lvl').innerText = "NIV. " + lvl;
-        }
+    function handleNext() {
+        currentQIdx++;
+        if(currentQIdx < currentT.questions.length) showQuestion();
+        else finishTheme();
+    }
 
-        function unlock(id) { document.getElementById('b-'+id).classList.add('unlocked'); }
+    function finishTheme() {
+        state.progress[currentT.id] = 100; state.xp += 50; save();
+        const overlay = document.createElement('div');
+        overlay.className = 'success-overlay';
+        overlay.innerHTML = `
+            <div style="font-size:60px;">🏆</div>
+            <h2 style="color:var(--g-blue)">Maîtrise acquise !</h2>
+            <p>Félicitations, tu as terminé le thème ${currentT.title}</p>
+            <button class="btn" style="width:200px" onclick="location.reload()">Retour au menu</button>
+        `;
+        document.body.appendChild(overlay);
+    }
 
-        function loadCas() {
-            const data = scenarios[current];
-            document.getElementById('cas-tag').innerText = data.tag;
-            document.getElementById('cas-q').innerText = data.q;
-            const optDiv = document.getElementById('cas-options');
-            optDiv.innerHTML = '';
-            document.getElementById('cas-rem').style.display = 'none';
-            document.getElementById('next-cas').style.display = 'none';
-            data.o.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option';
-                btn.innerText = opt;
-                btn.onclick = () => checkCas(i);
-                optDiv.appendChild(btn);
-            });
-        }
-
-        function checkCas(idx) {
-            const data = scenarios[current];
-            const btns = document.querySelectorAll('.option');
-            btns.forEach(b => b.style.pointerEvents = 'none');
-            const rem = document.getElementById('cas-rem');
-            rem.style.display = 'block';
-            rem.innerHTML = `<strong>Remédiation :</strong> ${data.r}`;
-            if(idx === data.c) { btns[idx].classList.add('correct'); addXP(40); }
-            else { btns[idx].classList.add('wrong'); btns[data.c].classList.add('correct'); }
-            document.getElementById('next-cas').style.display = 'block';
-        }
-
-        function nextCas() {
-            current = (current + 1) % scenarios.length;
-            if(current === 0) unlock('cas');
-            loadCas();
-        }
-
-        function checkSim() {
-            const val = parseFloat(document.getElementById('input-calc').value);
-            if(val === 2819.54) {
-                alert("✅ Bravo ! Calcul exact : 18.59 * 151.67 = 2819.54 €");
-                addXP(100); unlock('paie');
-            } else {
-                alert("❌ Erreur. Multipliez le taux par le nombre d'heures.");
-            }
-        }
-    </script>
+    renderMenu();
+</script>
 </body>
 </html>
