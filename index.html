@@ -3,304 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGORA MASTER - PRO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>AGORA Master - Système PGI v4.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a; --card: #1e293b; --accent: #8b5cf6;
-            --cyan: #06b6d4; --pink: #ec4899; --text: #f8fafc;
-            --success: #10b981; --error: #ef4444;
+            --pgi-blue: #2b5797; --pgi-dark: #1e1e1e; --pgi-gray: #f3f3f3;
+            --pgi-border: #d2d2d2; --success: #107c10; --error: #a80000;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; }
-        
-        header {
-            padding: 15px 25px; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.9); border-bottom: 2px solid var(--accent);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--cyan); }
-        .xp-pill { background: var(--accent); padding: 5px 15px; border-radius: 20px; font-weight: 800; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--pgi-gray); color: #333; display: flex; height: 100vh; overflow: hidden; }
 
-        /* NAVIGATION STYLE IMAGE */
-        .nav-tabs {
-            display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 15px;
-            background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .tab-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #fff; padding: 8px 18px; border-radius: 25px; cursor: pointer;
-            transition: 0.3s; font-size: 0.8rem; font-weight: 600;
-        }
-        .tab-btn.active { background: var(--accent); border-color: var(--cyan); box-shadow: 0 0 10px var(--accent); }
-        .btn-daily { background: linear-gradient(45deg, var(--pink), #8b5cf6); border: none; }
+        /* Barre Latérale PGI */
+        nav { width: 240px; background: var(--pgi-dark); color: white; display: flex; flex-direction: column; }
+        .nav-header { padding: 20px; background: var(--pgi-blue); font-weight: 700; font-size: 1.2rem; }
+        .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #333; transition: 0.2s; font-size: 0.9rem; }
+        .nav-item:hover, .nav-item.active { background: #3e3e3e; border-left: 4px solid var(--pgi-blue); }
 
-        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-        .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Contenu Principal */
+        main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .top-bar { background: white; padding: 10px 25px; border-bottom: 1px solid var(--pgi-border); display: flex; justify-content: space-between; align-items: center; }
+        .workspace { padding: 30px; max-width: 900px; margin: 0 auto; width: 100%; }
 
-        /* INTERFACE CARTES */
-        .card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .option {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px; border-radius: 10px; margin: 10px 0; cursor: pointer; transition: 0.2s;
-        }
-        .option:hover { background: rgba(255,255,255,0.07); }
-        .correct { background: var(--success) !important; color: white; border-color: var(--success); }
-        .incorrect { background: var(--error) !important; color: white; border-color: var(--error); }
-        
-        .btn-action { background: var(--cyan); color: #000; border: none; padding: 12px; border-radius: 10px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 15px; }
+        /* Widgets & Cards */
+        .widget { background: white; border: 1px solid var(--pgi-border); border-radius: 2px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .widget-h2 { font-size: 1.1rem; border-bottom: 2px solid var(--pgi-blue); padding-bottom: 10px; margin-bottom: 15px; color: var(--pgi-blue); text-transform: uppercase; }
 
-        /* FLASHCARDS */
-        .fc-box { width: 100%; max-width: 400px; height: 250px; margin: 20px auto; perspective: 1000px; cursor: pointer; }
+        /* Quiz UI */
+        .option { padding: 12px 15px; border: 1px solid var(--pgi-border); margin: 8px 0; cursor: pointer; transition: 0.2s; background: #fff; }
+        .option:hover { background: #f9f9f9; border-color: var(--pgi-blue); }
+        .correct { background: #dff6dd !important; border-color: var(--success) !important; color: var(--success); font-weight: 600; }
+        .incorrect { background: #fde7e9 !important; border-color: var(--error) !important; color: var(--error); }
+        .hidden { display: none; }
+        .btn-pgi { background: var(--pgi-blue); color: white; border: none; padding: 10px 20px; cursor: pointer; font-weight: 600; margin-top: 15px; }
+
+        /* Flashcards PGI Style */
+        .fc-container { perspective: 1000px; width: 100%; height: 200px; cursor: pointer; }
         .fc-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
         .fc-inner.flipped { transform: rotateY(180deg); }
-        .fc-front, .fc-back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-            display: flex; align-items: center; justify-content: center; border-radius: 15px; padding: 25px; text-align: center;
-        }
-        .fc-front { background: var(--accent); font-size: 1.5rem; font-weight: 800; border: 2px solid var(--cyan); }
-        .fc-back { background: var(--card); transform: rotateY(180deg); border: 2px solid var(--accent); font-size: 1rem; }
+        .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; border: 1px solid var(--pgi-border); border-radius: 4px; text-align: center; }
+        .fc-front { background: white; color: var(--pgi-blue); font-weight: 700; font-size: 1.4rem; }
+        .fc-back { background: var(--pgi-blue); color: white; transform: rotateY(180deg); }
+
+        #timer { font-family: monospace; font-size: 1.5rem; color: var(--error); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">AGORA MASTER</div>
-    <div class="xp-pill" id="xp-val">0 XP</div>
-</header>
-
-<nav class="nav-tabs">
-    <button class="tab-btn active" onclick="nav('home')">🏠 Accueil</button>
-    <button class="tab-btn btn-daily" onclick="nav('daily')">🎯 Défi Jour</button>
-    <button class="tab-btn" onclick="nav('fiches')">📖 Fiches</button>
-    <button class="tab-btn" onclick="nav('flash')">🃏 Flashcards</button>
-    <button class="tab-btn" onclick="nav('quiz')">❓ Quiz</button>
-    <button class="tab-btn" onclick="nav('chrono')">⏱️ Chrono</button>
+<nav>
+    <div class="nav-header">AGORA MASTER PGI</div>
+    <div class="nav-item active" onclick="showSec('dash')">Tableau de bord</div>
+    <div class="nav-item" onclick="showSec('daily')">Défi Quotidien</div>
+    <div class="nav-item" onclick="showSec('quiz')">Entraînement Thématique</div>
+    <div class="nav-item" onclick="showSec('flash')">Lexique Technique</div>
+    <div class="nav-item" onclick="showSec('chrono')">Cession Chronométrée</div>
+    <div class="nav-item" onclick="showSec('fiches')">Base Documentaire</div>
 </nav>
 
-<div class="container">
-    <section id="home" class="section active">
-        <h2 style="margin-bottom:20px;">Tableau de Bord RH</h2>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-            <div class="card" onclick="nav('daily')"><h3>Défi du jour</h3><p>Mission Layla</p></div>
-            <div class="card" onclick="nav('chrono')"><h3>Chrono Elite</h3><p>Record : --:--</p></div>
-        </div>
-    </section>
+<main>
+    <div class="top-bar">
+        <div id="breadcrumb">Module : Gestion des RH</div>
+        <div id="user-stats">Score Session : <span id="score">0</span> XP</div>
+    </div>
 
-    <section id="daily" class="section">
-        <div class="card">
-            <h2 id="d-title" style="color:var(--pink);"></h2>
-            <p id="d-desc" style="margin:15px 0;"></p>
-            <div id="d-action"></div>
-        </div>
-    </section>
+    <div class="workspace">
+        <section id="sec-dash" class="animate">
+            <div class="widget">
+                <h2 class="widget-h2">Résumé de l'activité</h2>
+                <p>Bienvenue dans l'interface de gestion. Sélectionnez un module dans la barre latérale pour commencer vos travaux administratifs.</p>
+            </div>
+        </section>
 
-    <section id="quiz" class="section">
-        <div id="q-menu" class="card">
-            <h3 style="margin-bottom:15px;">Thèmes de révision</h3>
-            <button class="option" style="width:100%;" onclick="initQuiz('recrutement')">1. Le Recrutement</button>
-            <button class="option" style="width:100%;" onclick="initQuiz('admin')">2. Gestion Administrative</button>
-            <button class="option" style="width:100%;" onclick="initQuiz('deplacements')">3. Déplacements</button>
-        </div>
-        <div id="q-play" class="hidden">
-            <div class="card">
-                <p id="q-meta" style="font-size:0.8rem; color:var(--cyan);"></p>
-                <h3 id="q-text" style="margin:10px 0;"></h3>
+        <section id="sec-daily" class="hidden animate">
+            <div class="widget">
+                <h2 class="widget-h2" id="daily-title">Chargement du scénario...</h2>
+                <p id="daily-desc" style="margin-bottom:20px;"></p>
+                <div id="daily-action"></div>
+            </div>
+        </section>
+
+        <section id="sec-quiz" class="hidden animate">
+            <div id="quiz-menu" class="widget">
+                <h2 class="widget-h2">Sélecteur de module</h2>
+                <button class="option" style="width:100%" onclick="startQuiz('recrutement')">Module 3.1 : Recrutement & Intégration</button>
+                <button class="option" style="width:100%" onclick="startQuiz('admin')">Module 3.1 : Gestion Administrative</button>
+                <button class="option" style="width:100%" onclick="startQuiz('deplacements')">Module 3.2 : Organisation des Déplacements</button>
+            </div>
+            <div id="quiz-engine" class="widget hidden">
+                <div id="q-progress" style="font-size:0.8rem; margin-bottom:10px;"></div>
+                <h3 id="q-text" style="margin-bottom:20px;"></h3>
                 <div id="q-options"></div>
-                <div id="q-feedback" class="hidden" style="margin-top:15px; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                    <p id="q-expl"></p>
-                    <button class="btn-action" onclick="nextQ()">Continuer</button>
+                <div id="q-feedback" class="hidden">
+                    <p id="q-expl" style="background:#f9f9f9; padding:10px; border-left:4px solid var(--pgi-blue); margin-top:15px;"></p>
+                    <button class="btn-pgi" onclick="nextQ()">Passer à l'étape suivante</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="flash" class="section">
-        <div class="fc-box" onclick="document.getElementById('fc-inner').classList.toggle('flipped')">
-            <div class="fc-inner" id="fc-inner">
-                <div class="fc-front" id="fc-f">Terme</div>
-                <div class="fc-back" id="fc-b">Définition</div>
+        <section id="sec-flash" class="hidden animate">
+            <div class="widget">
+                <h2 class="widget-h2">Lexique des termes RH</h2>
+                <div class="fc-container" onclick="document.getElementById('fc-inner').classList.toggle('flipped')">
+                    <div class="fc-inner" id="fc-inner">
+                        <div class="fc-front" id="fc-f"></div>
+                        <div class="fc-back" id="fc-b"></div>
+                    </div>
+                </div>
+                <button class="btn-pgi" style="width:100%" onclick="nextFC()">Terme suivant</button>
             </div>
-        </div>
-        <button class="btn-action" onclick="nextFC()">Suivant</button>
-    </section>
+        </section>
 
-    <section id="chrono" class="section">
-        <div class="card" style="text-align:center;">
-            <h2>MODE ÉLITE</h2>
-            <div id="c-timer" style="font-size:3rem; margin:15px 0; font-family:'Orbitron'; color:var(--pink);">02:00</div>
-            <button id="c-start" class="btn-action" onclick="startChrono()">Lancer le défi</button>
-            <div id="c-play" class="hidden" style="text-align:left;">
-                <h3 id="c-q"></h3>
-                <div id="c-opts"></div>
+        <section id="sec-chrono" class="hidden animate">
+            <div class="widget" style="text-align:center;">
+                <h2 class="widget-h2">Mode Performance</h2>
+                <div id="timer">02:00</div>
+                <button id="chrono-start-btn" class="btn-pgi" onclick="initChrono()">Lancer la session (2 min)</button>
+                <div id="chrono-play" class="hidden" style="text-align:left; margin-top:20px;">
+                    <h3 id="chrono-q"></h3>
+                    <div id="chrono-opts"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="fiches" class="section">
-        <div class="card">
-            <h3 style="color:var(--cyan);">Recrutement</h3>
-            <p>• <b>Fiche de poste :</b> Missions, tâches, organigramme. <br>• <b>Profil de poste :</b> Diplômes, savoir-être. <br>• <b>DPAE :</b> Déclaration 8j avant l'embauche.</p>
-        </div>
-        <div class="card">
-            <h3 style="color:var(--accent);">Gestion Administrative</h3>
-            <p>• <b>Registre du Personnel :</b> Obligatoire, chronologique, indélébile. <br>• <b>Avenant :</b> Requis pour modification du salaire, du lieu ou du poste.</p>
-        </div>
-    </section>
-</div>
+        <section id="sec-fiches" class="hidden animate">
+            <div id="fiches-render"></div>
+        </section>
+    </div>
+</main>
 
 <script>
-// --- DONNÉES ---
-const database = {
+// --- DONNÉES COMPLÈTES (BASÉES SUR GUIDE RH) ---
+const bank = {
     recrutement: [
-        { q: "Quelle différence entre recrutement interne et externe ?", o: ["L'interne est payant", "L'interne cible les salariés déjà présents", "L'externe cible uniquement les stagiaires"], a: 1, e: "L'interne s'adresse aux salariés déjà en poste." },
-        { q: "Qu'est-ce qu'une fiche de poste ?", o: ["Un CV", "Une description des missions et de l'organigramme", "Une annonce de salaire"], a: 1, e: "Elle décrit le travail et la position hiérarchique." },
-        { q: "Délai pour faire la DPAE ?", o: ["8 jours après", "8 jours avant", "1 mois après"], a: 1, e: "Doit être faite dans les 8 jours précédant l'embauche." }
+        { q: "Quelle est la différence fondamentale entre le recrutement interne et externe ?", o: ["L'interne est plus cher", "L'interne cible le personnel actuel, l'externe le marché du travail", "L'interne n'a pas d'entretien", "L'externe est réservé aux cadres"], a: 1, e: "Le recrutement interne concerne les salariés déjà présents dans l'organisation." },
+        { q: "Qu'est-ce qu'une 'Fiche de poste' ?", o: ["Le CV du candidat", "Portrait du candidat idéal", "Description des missions, tâches et place dans l'organigramme"], a: 2, e: "La fiche de poste définit le travail à accomplir et les liens hiérarchiques." },
+        { q: "Quelle formalité faire 8 jours avant l'embauche ?", o: ["Signature contrat", "DPAE", "Visite médicale"], a: 1, e: "La Déclaration Préalable à l'Embauche est obligatoire avant la prise de poste." }
     ],
     admin: [
-        { q: "Sanction pour non-tenue du registre ?", o: ["135€", "750€ par salarié", "Aucune"], a: 1, e: "750€ d'amende par salarié concerné." },
-        { q: "Quand l'avenant est-il obligatoire ?", o: ["Changement de numéro", "Modif élément essentiel (salaire, lieu)", "Changement de banque"], a: 1, e: "Requis pour modifier salaire, lieu, poste ou durée." }
+        { q: "Sanction pour non-tenue du registre du personnel ?", o: ["135€", "750€ par salarié concerné", "Fermeture administrative"], a: 1, e: "La sanction s'applique par salarié manquant ou pour chaque mention incomplète." },
+        { q: "Quand l'avenant au contrat est-il obligatoire ?", o: ["Changement d'adresse", "Modification d'un élément essentiel (salaire, lieu, poste)", "Changement de RIB"], a: 1, e: "Toute modification d'un élément substantiel du contrat nécessite un avenant signé." }
     ],
     deplacements: [
-        { q: "Document couvrant l'accident en mission ?", o: ["Billet de train", "Ordre de mission", "Devis hôtel"], a: 1, e: "L'ordre de mission garantit la protection sociale." }
+        { q: "Document couvrant l'accident en mission ?", o: ["Billet de train", "Ordre de mission", "Devis hôtel"], a: 1, e: "L'ordre de mission garantit la protection sociale du salarié en déplacement." }
     ]
 };
 
-const dailyScenarios = [
-    { t: "Mission Gloria", d: "Gloria (18,59€/h) fait 151,67h. Calculez son salaire brut.", type: "calc", ans: 2819.54 },
-    { t: "L'Inspecteur", d: "Le registre est écrit au crayon. Est-ce légal ?", opts: ["Oui", "Non, doit être indélébile"], ans: 1 }
+const daily = [
+    { t: "Calcul Paie : Gloria Mioty", d: "Gloria (18,59€/h) travaille 151,67h mensuelles. Calculez son salaire de base brut.", type: "calc", ans: 2819.54 },
+    { t: "Audit Registre", d: "L'inspecteur note une inscription au crayon à papier. Verdict ?", o: ["Acceptable", "Non conforme (doit être indélébile)"], ans: 1 },
+    { t: "Formalité Embauche", d: "Layla Bamara arrive demain. Quelle action URSSAF est prioritaire ?", o: ["DPAE", "DUE"], ans: 0 }
 ];
 
-const flashcards = [
-    { t: "Onboarding", d: "Processus d'accueil et d'intégration." },
-    { t: "Avenant", d: "Acte écrit modifiant le contrat initial." },
-    { t: "DPAE", d: "Déclaration Préalable à l'Embauche (URSSAF)." }
+const flash = [
+    { t: "DPAE", d: "Déclaration Préalable à l'Embauche. Obligatoire à l'URSSAF avant toute embauche." },
+    { t: "Onboarding", d: "Processus complet d'accueil et d'intégration d'un nouveau collaborateur." },
+    { t: "Avenant", d: "Document écrit constatant une modification du contrat de travail initial." },
+    { t: "Ordre de Mission", d: "Document autorisant le déplacement et garantissant la protection sociale." },
+    { t: "CEAM", d: "Carte Européenne d'Assurance Maladie pour les soins au sein de l'UE." }
 ];
 
-// --- LOGIQUE ---
-let state = { xp: 0, currentSet: [], qIdx: 0, fcIdx: 0, isChrono: false };
+const fiches = [
+    { t: "Fiche 1 : Recrutement", c: "La préparation nécessite la définition du besoin. On utilise la fiche de poste (missions) et le profil de poste (candidat idéal). Le recrutement interne favorise la promotion, l'externe apporte des idées neuves." },
+    { t: "Fiche 2 : Gestion Administrative", c: "Le contrat fixe les obligations réciproques. Le registre unique du personnel est obligatoire dès le premier salarié et doit être tenu par ordre chronologique." }
+];
 
-function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
+// --- LOGIQUE MOTEUR ---
+let state = { xp: 0, qSet: [], qIdx: 0, fcIdx: 0, timer: null };
 
-function nav(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.currentTarget.classList.add('active');
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+function showSec(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('sec-' + id).classList.remove('hidden');
+    if(id === 'flash') loadFC();
     if(id === 'daily') loadDaily();
+    if(id === 'fiches') renderFiches();
 }
 
-function initQuiz(cat) {
-    state.currentSet = shuffle([...database[cat]]);
+// QUIZ
+function startQuiz(cat) {
+    state.qSet = shuffle([...bank[cat]]);
     state.qIdx = 0;
-    document.getElementById('q-menu').classList.add('hidden');
-    document.getElementById('q-play').classList.remove('hidden');
+    document.getElementById('quiz-menu').classList.add('hidden');
+    document.getElementById('quiz-engine').classList.remove('hidden');
     loadQ();
 }
 
 function loadQ() {
-    const q = state.currentSet[state.qIdx];
-    document.getElementById('q-meta').innerText = `Question ${state.qIdx + 1}/${state.currentSet.length}`;
+    const q = state.qSet[state.qIdx];
+    document.getElementById('q-progress').innerText = `PROCESSUS : ÉTAPE ${state.qIdx + 1} SUR ${state.qSet.length}`;
     document.getElementById('q-text').innerText = q.q;
     document.getElementById('q-feedback').classList.add('hidden');
-    const opts = document.getElementById('q-options');
-    opts.innerHTML = "";
+    const box = document.getElementById('q-options');
+    box.innerHTML = "";
     
     // Shuffle options
-    const shuffledOpts = q.o.map((o, i) => ({o, i}));
-    shuffle(shuffledOpts).forEach(item => {
-        const d = document.createElement('div');
-        d.className = 'option'; d.innerText = item.o;
-        d.onclick = () => checkQ(item.i, d);
-        opts.appendChild(d);
+    const oIndices = shuffle([...Array(q.o.length).keys()]);
+    oIndices.forEach(i => {
+        const div = document.createElement('div');
+        div.className = 'option'; div.innerText = q.o[i];
+        div.onclick = () => checkQ(i, div);
+        box.appendChild(div);
     });
 }
 
 function checkQ(idx, el) {
-    const q = state.currentSet[state.qIdx];
-    const items = document.querySelectorAll('#q-options .option');
-    items.forEach(it => it.style.pointerEvents = 'none');
-    
-    if(idx === q.a) {
-        el.classList.add('correct'); state.xp += 50;
-    } else {
-        el.classList.add('incorrect');
-        // Find correct option text to highlight it
-        items.forEach(it => { if(it.innerText === q.o[q.a]) it.classList.add('correct'); });
-    }
+    const q = state.qSet[state.qIdx];
+    const opts = document.querySelectorAll('#q-options .option');
+    opts.forEach(o => o.style.pointerEvents = 'none');
+    if(idx === q.a) { el.classList.add('correct'); state.xp += 100; }
+    else { el.classList.add('incorrect'); opts.forEach(o => { if(o.innerText === q.o[q.a]) o.classList.add('correct'); }); }
     document.getElementById('q-expl').innerText = q.e;
     document.getElementById('q-feedback').classList.remove('hidden');
-    document.getElementById('xp-val').innerText = state.xp + " XP";
+    document.getElementById('score').innerText = state.xp;
 }
 
 function nextQ() {
     state.qIdx++;
-    if(state.qIdx < state.currentSet.length) loadQ();
-    else {
-        document.getElementById('q-menu').classList.remove('hidden');
-        document.getElementById('q-play').classList.add('hidden');
-    }
+    if(state.qIdx < state.qSet.length) loadQ();
+    else { document.getElementById('quiz-menu').classList.remove('hidden'); document.getElementById('quiz-engine').classList.add('hidden'); }
 }
 
 // FLASHCARDS
-function nextFC() {
-    state.fcIdx = (state.fcIdx + 1) % flashcards.length;
-    document.getElementById('fc-f').innerText = flashcards[state.fcIdx].t;
-    document.getElementById('fc-b').innerText = flashcards[state.fcIdx].d;
+function loadFC() {
+    document.getElementById('fc-f').innerText = flash[state.fcIdx].t;
+    document.getElementById('fc-b').innerText = flash[state.fcIdx].d;
     document.getElementById('fc-inner').classList.remove('flipped');
 }
-
-// DAILY
-function loadDaily() {
-    const s = dailyScenarios[0];
-    document.getElementById('d-title').innerText = s.t;
-    document.getElementById('d-desc').innerText = s.d;
-    const area = document.getElementById('d-action');
-    area.innerHTML = "";
-    if(s.type === 'calc') {
-        area.innerHTML = `<input type="number" id="d-in" style="width:100%; padding:10px; margin-bottom:10px;">
-                          <button class="btn-action" onclick="checkD()">Valider</button>`;
-    } else {
-        s.opts.forEach((o, i) => area.innerHTML += `<div class="option" onclick="checkD(${i})">${o}</div>`);
-    }
-}
-
-function checkD(idx) {
-    alert("Défi réussi ! +500 XP"); state.xp += 500;
-    document.getElementById('xp-val').innerText = state.xp + " XP";
-    nav('home');
-}
+function nextFC() { state.fcIdx = (state.fcIdx + 1) % flash.length; loadFC(); }
 
 // CHRONO
-function startChrono() {
-    const all = [...database.recrutement, ...database.admin, ...database.deplacements];
-    state.currentSet = shuffle(all).slice(0, 5);
-    state.qIdx = 0;
-    document.getElementById('c-start').classList.add('hidden');
-    document.getElementById('c-play').classList.remove('hidden');
+function initChrono() {
+    const all = [...bank.recrutement, ...bank.admin, ...bank.deplacements];
+    state.qSet = shuffle(all); state.qIdx = 0;
+    document.getElementById('chrono-start-btn').classList.add('hidden');
+    document.getElementById('chrono-play').classList.remove('hidden');
+    let timeLeft = 120;
+    state.timer = setInterval(() => {
+        timeLeft--;
+        let m = Math.floor(timeLeft / 60); let s = timeLeft % 60;
+        document.getElementById('timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        if(timeLeft <= 0) { clearInterval(state.timer); alert("Fin de session."); location.reload(); }
+    }, 1000);
     loadChronoQ();
 }
 
 function loadChronoQ() {
-    const q = state.currentSet[state.qIdx];
-    document.getElementById('c-q').innerText = q.q;
-    const area = document.getElementById('c-opts');
-    area.innerHTML = "";
+    const q = state.qSet[state.qIdx];
+    document.getElementById('chrono-q').innerText = q.q;
+    const box = document.getElementById('chrono-opts');
+    box.innerHTML = "";
     q.o.forEach((o, i) => {
-        const d = document.createElement('div');
-        d.className = 'option'; d.innerText = o;
-        d.onclick = () => {
-            if(i === q.a) { state.qIdx++; if(state.qIdx < state.currentSet.length) loadChronoQ(); else alert("Chrono terminé !"); }
-            else alert("Erreur ! Recommencez.");
-        };
-        area.appendChild(d);
+        const div = document.createElement('div'); div.className = 'option'; div.innerText = o;
+        div.onclick = () => { if(i === q.a) state.xp += 50; state.qIdx++; loadChronoQ(); };
+        box.appendChild(div);
     });
 }
 
-// Init
-nextFC();
+// DAILY
+function loadDaily() {
+    const d = shuffle([...daily])[0];
+    document.getElementById('daily-title').innerText = d.t;
+    document.getElementById('daily-desc').innerText = d.d;
+    const area = document.getElementById('daily-action'); area.innerHTML = "";
+    if(d.type === 'calc') {
+        area.innerHTML = `<input type="number" id="d-in" step="0.01" style="width:100%; padding:10px;"><button class="btn-pgi" onclick="checkDaily('${d.ans}')">Valider</button>`;
+    } else {
+        d.o.forEach((o, i) => { area.innerHTML += `<div class="option" onclick="checkDaily(${i}, ${d.ans})">${o}</div>`; });
+    }
+}
+
+function checkDaily(val, target) {
+    let win = (val == target);
+    if(win) { alert("Analyse correcte. +500 XP"); state.xp += 500; document.getElementById('score').innerText = state.xp; showSec('dash'); }
+    else alert("Erreur d'analyse. Réessayez.");
+}
+
+function renderFiches() {
+    document.getElementById('fiches-render').innerHTML = fiches.map(f => `<div class="widget"><h2 class="widget-h2">${f.t}</h2><p>${f.c}</p></div>`).join('');
+}
 </script>
 </body>
 </html>
